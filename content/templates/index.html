@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="home-header bg-gray-900 py-20 flex flex-col items-center">
+        <h1 class="mb-4 text-4xl text-gray-900 md:text-5xl lg:text-6xl text-white">
+            <span class="font-bold leading-none tracking-tight">Les données</span> dans le monde
+        </h1>
+        <span class="text-lg font-normal text-white lg:text-xl">Aperçus et données pour 170 secteurs et plus de 150 pays</span>
+        <form class="w-full max-w-4xl">   
+            <div class="relative mt-14">
+                <input type="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher un secteur, un thème, un article, une infographie..." required>
+                <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher sur InfoStat</button>
+            </div>
+        </form>
+        <div class="flex flex-wrap justify-center mt-6 max-w-sm">
+            {% for theme in themes_random %}
+                <div class="ml-2 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-600 text-white rounded-full mb-2">
+                    <a href="#">{{theme.nom}}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="custom-shape-divider-top-1689018013">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+        </svg>
+    </div>
+    <div class="content flex flex-col items-center">
+        <img class="my-24" src="{% static 'line.svg' %}">
+        <span class="font-semibold text-blue-600">NOUVELLES STATISTIQUES</span>
+        <div class="max-w-3xl mx-auto">
+            <h1 class="mt-3 text-4xl font-light">
+                Statistiques actuelles sur des sujets populaires
+            </h1>
+            <div id="default-carousel" class="relative mt-14" data-carousel="static">
+                <!-- Carousel wrapper -->
+                <div class="overflow-hidden relative h-64 rounded shadow-custom">
+                  <!-- Item 1 -->
+                    {% for infographie in infographies %}
+                        <div class="hidden duration-700 ease-in-out flex rounded text-lg" data-carousel-item>
+                            <div class="m-2 w-1/2">
+                                <img src="{% static infographie.graphique %}">
+                            </div>
+                            <div class="m-2 w-1/2">
+                                <div class="">
+                                    <span class="text-blue-600">{{infographie.pub_date}} |</span>
+                                    <span class="text-blue-600">{{infographie.theme.nom}}</span>
+                                </div>
+                                <div class="flex-row mt-2">
+                                    <span class="">{{infographie.titre}}</span>
+                                    <div class="h-28 overflow-hidden mt-2">
+                                        <span class="text-gray-600 text-base">{{infographie.description}}</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <img class="h-3 mr-1" src="{% static 'arrow.svg' %}">
+                                        <a class="text-blue-600 hover:underline text-base" href="#">lire plus</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Slider indicators -->
+                <div class="flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
+                  <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+                </div>
+                <!-- Slider controls -->
+                <button type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
+                  <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <svg class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    <span class="hidden">Previous</span>
+                  </span>
+                </button>
+                <button type="button" class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
+                  <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <svg class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    <span class="hidden">Next</span>
+                  </span>
+                </button>
+            </div>
+        </div>
+
+        <img class="my-24" src="{% static 'line.svg' %}">
+        <span class="font-semibold text-blue-600">THÈMES POPULAIRES</span>
+        <h1 class="mt-3 text-4xl font-light">
+            Point de départ de votre recherche
+        </h1>
+
+        <div class="flex flex-wrap justify-center mt-14 max-w-5xl">
+            {% for theme in themes_popular %}
+                <div class="inline-flex items-center text-blue-600 hover:underline p-5">
+                    <a href="#">{{theme.nom}}</a>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <img class="my-24" src="{% static 'line.svg' %}">
+        <span class="font-semibold text-blue-600">NOUVEAUTÉS</span>
+        <h1 class="mt-3 text-4xl font-light">
+            Actualités et publications
+        </h1>
+        <div class="max-w-5xl flex flex-col lg:flex-row">
+            {% for theme in themes_new %}
+                <div class="w-full h-auto shadow-custom rounded-md mt-14 mx-6 flex flex-col">
+                    <img class="h-28 object-cover" src="{% static 'flag.png' %}">
+                    <div class="m-6 flex flex-col flex-1">
+                        <span class="">{{theme.nom}}</span>
+                        <span class="mt-3">Découvrez les dernières données sur {{theme.nom}}</span>
+                        <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400 mt-3">
+                            {% for infographie in theme.infographies.all|slice:":2"%}
+                                <li>
+                                    <a href="#">{{infographie.titre}}</a>
+                                </li>
+                            {% endfor %}
+                            <li>
+                                <a href="#">{{theme.articles.first.titre}}</a>
+                            </li>
+                        </ul>
+                        <div class="self-end mt-auto flex items-center">
+                            <img class="h-3 mr-1" src="{% static 'arrow.svg' %}">
+                            <span class="hover:underline text-blue-600">En savoir plus</span> 
+                        </div> 
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <img class="my-24" src="{% static 'line.svg' %}">
+        <span class="font-semibold text-blue-600">CONTACT</span>
+        <h1 class="mt-3 text-4xl font-light">
+            Des questions ? Nous nous ferons un plaisir de vous aider.
+        </h1>
+        <div class="flex max-w-5xl mt-14">
+            <img class="w-1/2 mr-14" src="{% static 'world_map.png' %}">
+            <div> 
+                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for infographie in infographies %}
+                        <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="{% static 'default_profil.png' %}"">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Neil Sims
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    email@infostat.com
+                                </p>
+                            </div>
+                        </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <img class="my-24" src="{% static 'line.svg' %}">
+    </div>
+{% endblock body %}
