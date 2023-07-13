@@ -65,7 +65,7 @@ def generate_article(num):
     for _ in range(num):
         article = Article.objects.create(
             titre=fake.sentence(),
-            description=fake.text(max_nb_chars=2500),
+            description=fake.text(max_nb_chars=14000),
             source="https://www.cairn.fr",
             compteur=random.randint(0, 3000),
             pub_date=fake.date(),

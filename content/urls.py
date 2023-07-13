@@ -1,4 +1,8 @@
-from . import views
+from . import views, secteur_views, infographie_views, article_views
 from django.urls import include, path
 
-urlpatterns = [path("secteur", views.secteur, name="secteur")]
+urlpatterns = [
+    path("secteur", secteur_views.secteur, name="secteur"),
+    path("infographie/<int:id>/", infographie_views.infographie, name="infographie"),
+    path("article/<int:id>/", article_views.article, name="article"),
+]

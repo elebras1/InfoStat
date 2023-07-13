@@ -35,8 +35,3 @@ def index(request):
             "themes_new": themes_new,
         },
     )
-
-
-def secteur(request):
-    secteurs = Secteur.objects.order_by("nom")
-    return render(request, "secteur.html", {"secteurs": secteurs})

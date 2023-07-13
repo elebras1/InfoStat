@@ -44,7 +44,7 @@ class Infographie(models.Model):
 class Article(models.Model):
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, related_name="articles")
     titre = models.CharField(max_length=80)
-    description = models.TextField(max_length=3000)
+    description = models.TextField(max_length=15000)
     source = models.CharField(max_length=120)
     compteur = models.IntegerField(null=True, default=0)
     pub_date = models.DateTimeField("date de publication")

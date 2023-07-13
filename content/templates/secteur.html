@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block body %}
     <div class="flex flex-row justify-center">
@@ -19,13 +18,13 @@
                 </form>
             </div>
 
-            <div class="pt-24 flex flex-wrap justify-center pb-14 border border-gray-300">
+            <div class="pt-6 flex flex-wrap justify-center pb-14 border border-gray-300">
                 {% for secteur in secteurs %}
                     <div class="m-6 p-6 bg-white w-80 h-72 shadow-custom overflow-auto rounded">
                         <a class="text-gray-600 underline font-medium">{{secteur.nom}}</a>
                         <div class="flex flex-col mt-3">
                             {% for theme in secteur.themes.all %}
-                                <a href="#" class="text-blue-600">{{theme.nom}}</a>
+                                <a href="#" class="text-blue-600 hover:underline">{{theme.nom}}</a>
                             {% endfor %}
                         </div>
                     </div>
