@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="flex items-center flex-col">
+        <div class="max-w-6xl w-full p-14 border border-gray-300">
+            <div>
+                <div class="flex items-center">
+                    <a href="#" class="text-blue-600 mr-2 hover:underline">Secteurs</a>
+                    <img src={% static 'arrow.svg' %} class="h-3 mr-2">
+                    <a href="#" class="text-blue-600 mr-2 hover:underline">{{theme.secteur.nom}}</a>
+                </div>
+
+                <div class="mt-6 flex flex-row justify-between">
+                    <div class="flex flex-col w-1/2">
+                        <span class="text-4xl font-light">{{theme.nom}}</span>
+                        <span class="font-medium text-gray-600 mt-3">STATISTIQUES RECENTES</span>
+                        <div class="mt-6">
+                            {% for infographie in infographies %}
+                                <a href="#" class="block hover:bg-gray-100">
+                                    <div class="flex items-center mt-2">
+                                        <img src="{% static 'article.png' %}" class="h-5 mr-1">
+                                        <span class="text-gray-600">{{ infographie.titre }}</span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="flex flex-col rounded-lg w-1/3 border border-gray-200 shadow-custom p-6 overflow-auto max-h-72">
+                        <a href="#" class="font-medium text-gray-600">Secteurs</a>
+                        <span class="text-blue-600 text-lg">{{theme.nom}}</span>
+                        <ul class="text-blue-600 text-sm list-disc list-inside">
+                            {% for theme in theme.secteur.themes.all %}
+                                <li class="hover:underline">
+                                    <a href="#">{{theme.nom}}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-6xl w-full p-14 border border-gray-300">
+            <div class="flex flex-col w-1/2">
+                <span class="font-medium text-gray-600 mt-3">ARTICLES RECENTS</span>
+                <div class="mt-6">
+                    {% for article in articles %}
+                        <a href="#" class="block hover:bg-gray-100">
+                            <div class="flex items-center mt-2">
+                                <img src="{% static 'article.png' %}" class="h-5 mr-1">
+                                <span class="text-gray-600">{{ article.titre }}</span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="max-w-6xl w-full p-14 border border-gray-300">
+           <form class="w-full">   
+                <div class="relative mt-14">
+                    <input type="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher un article, une infographie..." required>
+                    <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
+                </div>
+            </form> 
+        </div>
+    </div>
+    {% include 'partials/contact_block.html' %}
+{% endblock body %}
+
