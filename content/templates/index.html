@@ -16,7 +16,7 @@
         <div class="flex flex-wrap justify-center mt-6 max-w-sm">
             {% for theme in themes_random %}
                 <div class="ml-2 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-600 text-white rounded-full mb-2">
-                    <a href="#">{{theme.nom}}</a>
+                    <a href="{% url 'infographie' theme.id %}">{{theme.nom}}</a>
                 </div>
             {% endfor %}
         </div>
@@ -44,17 +44,18 @@
                             </div>
                             <div class="m-2 w-1/2">
                                 <div class="">
-                                    <span class="text-blue-600">{{infographie.pub_date}} |</span>
+                                    <span class="text-blue-600">{{infographie.pub_date}}</span>
+                                    <span class="mx-1 text-blue-600">|</span>
                                     <span class="text-blue-600">{{infographie.theme.nom}}</span>
                                 </div>
                                 <div class="flex-row mt-2">
                                     <span class="">{{infographie.titre}}</span>
-                                    <div class="h-28 overflow-hidden mt-2">
+                                    <div class="h-28 overflow-hidden  mt-2">
                                         <span class="text-gray-600 text-base">{{infographie.description}}</span>
                                     </div>
                                     <div class="flex items-center">
                                         <img class="h-3 mr-1" src="{% static 'arrow.svg' %}">
-                                        <a class="text-blue-600 hover:underline text-base" href="#">lire plus</a>
+                                        <a class="text-blue-600 hover:underline text-base" href="{% url 'infographie' infographie.id %}">lire plus</a>
                                     </div>
                                 </div>
                             </div>
@@ -89,8 +90,8 @@
 
         <div class="flex flex-wrap justify-center mt-14 max-w-5xl">
             {% for theme in themes_popular %}
-                <div class="inline-flex items-center text-blue-600 hover:underline p-5">
-                    <a href="#">{{theme.nom}}</a>
+                <div class="items-center text-blue-600 p-5">
+                    <a href="{% url 'theme' theme.id %}" class="hover:underline">{{theme.nom}}</a>
                 </div>
             {% endfor %}
         </div>
@@ -111,16 +112,18 @@
                         <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400 mt-3">
                             {% for infographie in theme.infographies.all|slice:":2"%}
                                 <li>
-                                    <a href="#">{{infographie.titre}}</a>
+                                    <a href="{% url 'infographie' infographie.id %}">{{infographie.titre}}</a>
                                 </li>
                             {% endfor %}
                             <li>
-                                <a href="#">{{theme.articles.first.titre}}</a>
+                                <a href="{% url 'article' theme.articles.first.id %}">{{theme.articles.first.titre}}</a>
                             </li>
                         </ul>
                         <div class="self-end mt-auto flex items-center">
                             <img class="h-3 mr-1" src="{% static 'arrow.svg' %}">
-                            <span class="hover:underline text-blue-600">En savoir plus</span> 
+                            <a href="{% url 'theme' theme.id %}">
+                                <span class="hover:underline text-blue-600">En savoir plus</span> 
+                            </a>
                         </div> 
                     </div>
                 </div>
@@ -140,7 +143,7 @@
                         <li class="pb-3 sm:pb-4">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
-                                <img class="w-8 h-8 rounded-full" src="{% static 'default_profil.png' %}"">
+                                <img class="w-8 h-8 rounded-full" src="{% static 'default_profil.png' %}">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import Http404
-from .models import Theme, Infographie, Secteur
+from .models import Theme, Infographie, Article
 from datetime import datetime, timedelta
+from django.core.paginator import Paginator
 
 import random
 
@@ -34,4 +35,25 @@ def index(request):
             "themes_random": themes_random,
             "themes_new": themes_new,
         },
+    )
+
+
+def recherche(request):
+    articles = Article.objects.order_by("-pub_date")
+    infographies = Infographie.objects.order_by("-pub_date")
+
+    results = list(articles) + list(infographies)
+    results.sort(key=lambda x: x.pub_date, reverse=True)
+
+    nombre_total = len(articles) + len(infographies)
+
+    results_per_page = 10
+    paginator = Paginator(results, results_per_page)
+    page_number = request.GET.get("page", 1)
+    page = paginator.get_page(page_number)
+
+    return render(
+        request,
+        "recherche.html",
+        {"nombre_total": nombre_total, "results": results, "page": page},
     )

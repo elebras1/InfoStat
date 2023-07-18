@@ -5,9 +5,9 @@
     <div class="flex justify-center">
         <div class="max-w-6xl w-full mt-14">
             <div class="flex items-center">
-                <a href="#" class="text-blue-600 mr-2 hover:underline">{{infographie.theme.secteur.nom}}</a>
+                <a href="{% url 'secteur' infographie.theme.secteur.id %}" class="text-blue-600 mr-2 hover:underline">{{infographie.theme.secteur.nom}}</a>
                 <img src={% static 'arrow.svg' %} class="h-3 mr-2">
-                <a href="#" class="text-blue-600 mr-2 hover:underline">{{infographie.theme.nom}}</a>
+                <a href="{% url 'theme' infographie.theme.id %}" class="text-blue-600 mr-2 hover:underline">{{infographie.theme.nom}}</a>
             </div>
             <h1 class="text-4xl font-light">
                 {{infographie.titre}}
@@ -38,7 +38,7 @@
                         <span class="text-gray-600 font-medium">Source</span>
                         <div class="flex items-center">
                             <img src="{% static 'arrow.svg' %}" class="h-3 mr-1">
-                            <a href="{{infographie.source}}" class="text-blue-600 hover:underline">lien</a>
+                            <a href="{{infographie.source}}" class="text-blue-600 hover:underline" target="_blank">lien</a>
                         </div>
 
                         <span class="text-gray-600 font-medium mt-1">Date de publication</span>
@@ -74,7 +74,7 @@
                             <img src={% static infographie.graphique %} class="h-16">
                             <div class="flex flex-col ml-3">
                                 <span class="font-medium text-gray-600">{{infographie.theme}}</span>
-                                <a href="#" class="text-gray-600 hover:text-blue-600">{{infographie.titre}}</a>
+                                <a href="{% url 'infographie' infographie.id %}" class="text-gray-600 hover:text-blue-600">{{infographie.titre}}</a>
                             </div>
                         </div>
                     </div>
@@ -92,11 +92,11 @@
                         <div class="flex">
                             <div class="flex flex-col ml-3">
                                 <span class="font-medium text-gray-600">{{article.theme}}</span>
-                                <a href="" class="text-gray-600 hover:text-blue-600">{{article.titre}}</a>
+                                <a href="{% url 'article' article.id %}" class="text-gray-600 hover:text-blue-600">{{article.titre}}</a>
                                 <span class="text-gray-600 mt-3 h-40 overflow-hidden">{{article.description}}</span>
                                 <div class="flex items-center justify-end mt-auto">
                                     <img src={% static 'arrow.svg' %} class="h-3 mr-1">
-                                    <a href="#" class="text-blue-600 mr-2 hover:underline">lire la suite</a>
+                                    <a href="{% url 'article' article.id %}" class="text-blue-600 mr-2 hover:underline">lire la suite</a>
                                 </div>
                             </div>
                         </div>

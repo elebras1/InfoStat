@@ -1,37 +1,108 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block body %}
-    <div class="flex flex-row justify-center">
-        <div class="max-w-6xl bg-gray-100 w-full">
-            <div class="pt-14 flex flex-col items-center bg-white border border-gray-300">
-                <h1 class="text-5xl text-gray-600">
-                    Tous les secteurs
-                </h1>
-                <h1 class="text-4xl font-light mt-3">
-                    Tous les secteurs et leurs thèmes associées
-                </h1>
-                <form class="w-full max-w-xl pb-3">   
-                    <div class="relative mt-14">
-                        <input type="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher un secteur" required>
-                        <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
-                    </div>
-                </form>
+    <div class="flex items-center flex-col">
+        <div class="max-w-6xl w-full p-14 border border-gray-300">
+            <div class="flex items-center">
+                <a href="{% url 'liste_secteur' %}" class="text-blue-600 mr-2 hover:underline">Secteurs</a>
+                <img src={% static 'arrow.svg' %} class="h-3 mr-2">
             </div>
 
-            <div class="pt-6 flex flex-wrap justify-center pb-14 border border-gray-300">
-                {% for secteur in secteurs %}
-                    <div class="m-6 p-6 bg-white w-80 h-72 shadow-custom overflow-auto rounded">
-                        <a class="text-gray-600 underline font-medium">{{secteur.nom}}</a>
-                        <div class="flex flex-col mt-3">
-                            {% for theme in secteur.themes.all %}
-                                <a href="#" class="text-blue-600 hover:underline">{{theme.nom}}</a>
-                            {% endfor %}
+            <div class="flex items-start">
+                <div class="mt-6 flex flex-row w-2/3 pr-14">
+                    <div class="flex flex-col">
+                        <span class="text-4xl font-light">{{secteur.nom}}</span>
+                        <span class="font-medium text-gray-600 mt-3">Informations et statistiques sur {{secteur.nom}}</span>
+                        <div class="mt-3">
+                            <img src="{% static secteur.illustration %}" class="h-12 float-left mr-3">
+                            <span class="text-gray-500 description truncated" id="description">{{secteur.description}}</span>
+                            <button id="toggle-btn" class="text-blue-500 hover:underline">Afficher plus</button>
+                            <button id="hide-btn" class="hidden text-blue-500 hover:underline">Masquer</button>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+                  
+
+                <div class="flex flex-col rounded-lg w-1/3 border border-gray-200 shadow-custom p-6 overflow-auto max-h-72">
+                    <a href="{% url 'liste_secteur' %}" class="font-medium text-gray-600">Secteurs</a>
+                    <span class="text-blue-600 text-lg">{{secteur.nom}}</span>
+                    <ul class="text-blue-600 text-sm list-disc list-inside">
+                        {% for theme in secteur.themes.all %}
+                            <li class="hover:underline">
+                                <a href="{% url 'theme' theme.id %}">{{theme.nom}}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="max-w-6xl w-full p-14 border border-gray-300">
+            <div class="max-w-6xl mt-6 w-full">
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="shadow-custom rounded p-3 w-full h-96 overflow-auto">
+                        <div class="flex">
+                            <div class="flex flex-col ml-3">
+                                <span class="font-medium text-gray-600">STATISTIQUES RECENTES</span>
+                                {% for infographie in infographies_recentes %}
+                                    <a href="{% url 'infographie' infographie.id %}">
+                                        <div class="flex items-center py-3 px-1 hover:bg-gray-100 rounded">
+                                            <img src="{% static 'graphique.png' %}" class="h-6 mr-1">
+                                            <span class="text-gray-600">{{infographie.titre}}</span>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shadow-custom rounded p-3 w-full h-96 overflow-auto">
+                        <div class="flex">
+                            <div class="flex flex-col ml-3">
+                                <span class="font-medium text-gray-600">STATISTIQUES POPULAIRES</span>
+                                {% for infographie in infographies_populaires %}
+                                    <a href="{% url 'infographie' infographie.id %}">
+                                        <div class="flex items-center py-3 px-1 hover:bg-gray-100 rounded">
+                                            <img src="{% static 'graphique.png' %}" class="h-6 mr-1">
+                                            <span class="text-gray-600">{{infographie.titre}}</span>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shadow-custom rounded p-3 w-full h-96 overflow-auto">
+                        <div class="flex">
+                            <div class="flex flex-col ml-3">
+                                <span class="font-medium text-gray-600">ARTICLES POPULAIRES</span>
+                                {% for article in articles_populaires %}
+                                    <a href="{% url 'article' article.id %}">
+                                        <div class="flex items-center py-3 px-1 hover:bg-gray-100 rounded">
+                                            <img src="{% static 'graphique.png' %}" class="h-6 mr-1">
+                                            <span class="text-gray-600">{{article.titre}}</span>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
 
+        <div class="max-w-6xl w-full p-14 border border-gray-300">
+            <form class="w-full">   
+                 <div class="relative">
+                     <input type="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher un article, une infographie..." required>
+                     <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
+                 </div>
+             </form> 
+         </div>
     </div>
+    {% include "partials/contact_block.html" %}
+
+    {% block javascript %}
+        {{ block.super}}
+        <script src="{% static 'js/script.js' %}"></script>
+    {% endblock javascript %}
 {% endblock body %}

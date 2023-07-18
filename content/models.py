@@ -4,7 +4,8 @@ from django.db import models
 class Secteur(models.Model):
     nom = models.CharField(max_length=80)
     description = models.TextField(max_length=3000)
-    pub_date = models.DateTimeField("date de publication")
+    illustration = models.CharField(max_length=120, null=True)
+    pub_date = models.DateField("date de publication")
 
     def __str__(self):
         return str(self.nom)
@@ -18,7 +19,7 @@ class Theme(models.Model):
     description = models.CharField(max_length=3000)
     illustration = models.CharField(max_length=120, null=True)
     compteur = models.IntegerField(null=True, default=0)
-    pub_date = models.DateTimeField("date de publication")
+    pub_date = models.DateField("date de publication")
 
     def __str__(self):
         return str(self.nom)
@@ -34,8 +35,11 @@ class Infographie(models.Model):
     source = models.CharField(max_length=120)
     periode_enquete = models.TextField(max_length=12)
     compteur = models.IntegerField(null=True, default=0)
-    pub_date = models.DateTimeField("date de publication")
-    # ajouter compteur
+    pub_date = models.DateField("date de publication")
+
+    @property
+    def type(self):
+        return "infographie"
 
     def __str__(self):
         return str(self.titre)
@@ -47,8 +51,11 @@ class Article(models.Model):
     description = models.TextField(max_length=15000)
     source = models.CharField(max_length=120)
     compteur = models.IntegerField(null=True, default=0)
-    pub_date = models.DateTimeField("date de publication")
-    # ajouter compteur
+    pub_date = models.DateField("date de publication")
+
+    @property
+    def type(self):
+        return "article"
 
     def __str__(self):
         return str(self.titre)

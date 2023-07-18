@@ -25,6 +25,7 @@ def generate_secteurs(num):
         secteur = Secteur.objects.create(
             nom=fake.word(),
             description=fake.text(max_nb_chars=2500),
+            illustration="flag.png",
             pub_date=fake.date_time(),
         )
         secteurs.append(secteur)
