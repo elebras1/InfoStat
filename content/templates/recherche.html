@@ -4,9 +4,9 @@
 {% block body %}
     <div class="flex flex-col items-center">
         <div class="max-w-6xl w-full mt-14 mb-4">
-            <form class="w-full">   
+            <form method="get" class="w-full">
                 <div class="relative">
-                    <input type="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher un article, une infographie..." required>
+                    {{ form.result }}
                     <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
                 </div>
             </form>
@@ -20,8 +20,8 @@
                 </div>
                 <div>
                     <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                        <option selected value="poulaire">Populaire</option>
-                        <option value="pub_date">Date de publication</option>
+                        <option selected value="pub_date">Date de publication</option>
+                        <option value="populaire">Populaire</option>
                     </select>
                 </div>
             </div>
@@ -59,15 +59,15 @@
 
         <div class="pagination flex items-center mb-14">
             {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}">
-                <img src="{% static 'pagination_arrow.svg' %}" class="h-6 rotate-180">
-            </a>
+                <a href="?page={{ page.previous_page_number }}{% if recherche %}&result={{ recherche }}{% endif %}">
+                    <img src="{% static 'pagination_arrow.svg' %}" class="h-6 rotate-180">
+                </a>
             {% endif %}
         
-            <span class="current-page mx-3">{{ page.number }} / {{page.paginator.num_pages}}</span>
+            <span class="current-page mx-3">{{ page.number }} / {{ page.paginator.num_pages }}</span>
         
             {% if page.has_next %}
-                <a href="?page={{ page.next_page_number }}">
+                <a href="?page={{ page.next_page_number }}{% if recherche %}&result={{ recherche }}{% endif %}">
                     <img src="{% static 'pagination_arrow.svg' %}" class="h-6">
                 </a>
             {% endif %}

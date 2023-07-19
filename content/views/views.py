@@ -1,8 +1,11 @@
-from django.shortcuts import render
-from django.http import Http404
-from .models import Theme, Infographie, Article
+from django.shortcuts import render, redirect
+from django.http import Http404, HttpResponseRedirect
+from ..models import Theme, Infographie, Article
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
+from ..forms.rechercheForm import RechercheForm
+from django.db.models import Q
+from django.urls import reverse
 
 import random
 
@@ -26,6 +29,13 @@ def index(request):
     except Infographie.DoesNotExist:
         raise Http404("Aucun graphique n'a été trouvé.")
 
+    form = RechercheForm(request.POST)
+    if form.is_valid():
+        recherche = form.cleaned_data.get("result", None)
+        if recherche:
+            url = reverse("recherche") + f"?result={recherche}"
+            return redirect(url)
+
     return render(
         request,
         "index.html",
@@ -34,13 +44,25 @@ def index(request):
             "infographies": infographies,
             "themes_random": themes_random,
             "themes_new": themes_new,
+            "form": form,
         },
     )
 
 
 def recherche(request):
+    form = RechercheForm(request.GET)
+    recherche = request.GET.get("result", None)
+
     articles = Article.objects.order_by("-pub_date")
     infographies = Infographie.objects.order_by("-pub_date")
+
+    if recherche:
+        articles = articles.filter(
+            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+        )
+        infographies = infographies.filter(
+            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+        )
 
     results = list(articles) + list(infographies)
     results.sort(key=lambda x: x.pub_date, reverse=True)
@@ -55,5 +77,11 @@ def recherche(request):
     return render(
         request,
         "recherche.html",
-        {"nombre_total": nombre_total, "results": results, "page": page},
+        {
+            "nombre_total": nombre_total,
+            "results": results,
+            "page": page,
+            "form": form,
+            "recherche": recherche,
+        },
     )

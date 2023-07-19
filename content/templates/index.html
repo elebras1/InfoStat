@@ -7,16 +7,17 @@
             <span class="font-bold leading-none tracking-tight">Les données</span> dans le monde
         </h1>
         <span class="text-lg font-normal text-white lg:text-xl">Aperçus et données pour 170 secteurs et plus de 150 pays</span>
-        <form class="w-full max-w-4xl">   
-            <div class="relative mt-14">
-                <input type="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher un secteur, un thème, un article, une infographie..." required>
-                <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher sur InfoStat</button>
+        <form method="POST" class="w-full max-w-3xl mt-14">
+            <div class="relative">
+                {% csrf_token %}
+                {{ form.result }}
+                <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
             </div>
         </form>
         <div class="flex flex-wrap justify-center mt-6 max-w-sm">
             {% for theme in themes_random %}
                 <div class="ml-2 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-600 text-white rounded-full mb-2">
-                    <a href="{% url 'infographie' theme.id %}">{{theme.nom}}</a>
+                    <a href="{% url 'theme' theme.id %}">{{theme.nom}}</a>
                 </div>
             {% endfor %}
         </div>
@@ -35,14 +36,14 @@
             </h1>
             <div id="default-carousel" class="relative mt-14" data-carousel="static">
                 <!-- Carousel wrapper -->
-                <div class="overflow-hidden relative h-64 rounded shadow-custom">
+                <div class="overflow-hidden relative h-64 rounded-md shadow-custom">
                   <!-- Item 1 -->
                     {% for infographie in infographies %}
-                        <div class="hidden duration-700 ease-in-out flex rounded text-lg" data-carousel-item>
-                            <div class="m-2 w-1/2">
+                        <div class="hidden duration-700 ease-in-out flex rounded text-lg p-3" data-carousel-item>
+                            <div class="w-1/2">
                                 <img src="{% static infographie.graphique %}">
                             </div>
-                            <div class="m-2 w-1/2">
+                            <div class="w-1/2">
                                 <div class="">
                                     <span class="text-blue-600">{{infographie.pub_date}}</span>
                                     <span class="mx-1 text-blue-600">|</span>

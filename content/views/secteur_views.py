@@ -1,12 +1,22 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
-from .models import Secteur, Infographie, Article
+from ..models import Secteur, Infographie, Article
 from datetime import datetime, timedelta
+from ..forms.rechercheForm import RechercheForm
+from django.db.models import Q
 
 
 def liste_secteur(request):
     secteurs = Secteur.objects.order_by("nom")
-    return render(request, "liste_secteur.html", {"secteurs": secteurs})
+
+    form = RechercheForm(request.GET)
+    recherche = request.GET.get("result", None)
+    if recherche:
+        secteurs = secteurs.filter(
+            Q(nom__icontains=recherche) | Q(themes__nom__icontains=recherche)
+        ).distinct()
+
+    return render(request, "liste_secteur.html", {"secteurs": secteurs, "form": form})
 
 
 def secteur(request, id):
