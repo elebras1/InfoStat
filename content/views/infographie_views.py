@@ -15,7 +15,7 @@ def infographie(request, id):
 
     return render(
         request,
-        "infographie.html/",
+        "infographie.html",
         {
             "infographie": infographie,
             "infographie_selection": infographie_selection,

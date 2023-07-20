@@ -1,4 +1,12 @@
-from .views import article_views, infographie_views, secteur_views, views, theme_views
+from .views import (
+    article_views,
+    infographie_views,
+    secteur_views,
+    views,
+    theme_views,
+    contact_views,
+    user_views,
+)
 from django.urls import include, path
 
 urlpatterns = [
@@ -8,4 +16,6 @@ urlpatterns = [
     path("article/<int:id>/", article_views.article, name="article"),
     path("theme/<int:id>/", theme_views.theme, name="theme"),
     path("recherche/", views.recherche, name="recherche"),
+    path("contact", contact_views.contact, name="contact"),
+    path("login", user_views.login, name="login"),
 ]

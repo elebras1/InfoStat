@@ -15,7 +15,7 @@ def article(request, id):
 
     return render(
         request,
-        "article.html/",
+        "article.html",
         {
             "article": article,
             "article_selection": article_selection,
