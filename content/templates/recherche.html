@@ -9,7 +9,6 @@
                     {{ form.result }}
                     <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
                 </div>
-            </form>
         </div>
         <div class="bg-gray-100 w-full py-3 flex justify-center">
             <div class="max-w-6xl flex justify-between items-center w-full">
@@ -18,13 +17,11 @@
                         NOMBRE TOTAL DE RÉSULTATS: <span class="ml-3 text-gray-500 font-normal">{{nombre_total}} résultats</span>
                     </span>
                 </div>
-                <div>
-                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                        <option selected value="pub_date">Date de publication</option>
-                        <option value="populaire">Populaire</option>
-                    </select>
+                <div>  
+                    {{ form.selection }}
                 </div>
             </div>
+            </form>
         </div>
         <div class="max-w-6xl">
             {% for result in page %}
@@ -59,7 +56,7 @@
 
         <div class="pagination flex items-center mb-14">
             {% if page.has_previous %}
-                <a href="?page={{ page.previous_page_number }}{% if recherche %}&result={{ recherche }}{% endif %}">
+                <a href="?page={{ page.previous_page_number }}{% if recherche %}&result={{ recherche }}{% endif %}{% if selection %}&selection={{ selection }}{% endif %}{% if theme_id %}&theme={{ theme_id }}{% endif %}">
                     <img src="{% static 'pagination_arrow.svg' %}" class="h-6 rotate-180">
                 </a>
             {% endif %}
@@ -67,7 +64,7 @@
             <span class="current-page mx-3">{{ page.number }} / {{ page.paginator.num_pages }}</span>
         
             {% if page.has_next %}
-                <a href="?page={{ page.next_page_number }}{% if recherche %}&result={{ recherche }}{% endif %}">
+                <a href="?page={{ page.next_page_number }}{% if recherche %}&result={{ recherche }}{% endif %}{% if selection %}&selection={{ selection }}{% endif %}{% if theme_id %}&theme={{ theme_id }}{% endif %}">
                     <img src="{% static 'pagination_arrow.svg' %}" class="h-6">
                 </a>
             {% endif %}

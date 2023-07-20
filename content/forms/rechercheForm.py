@@ -12,3 +12,17 @@ class RechercheForm(forms.Form):
             }
         ),
     )
+
+    CHOICES = (
+        ("pub_date", "Date de publication"),
+        ("populaire", "Populaire"),
+    )
+    selection = forms.ChoiceField(
+        choices=CHOICES,
+        required=False,
+        widget=forms.Select(
+            attrs={
+                "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white",
+            }
+        ),
+    )

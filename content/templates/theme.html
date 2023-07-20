@@ -17,8 +17,8 @@
                         <span class="font-medium text-gray-600 mt-3">STATISTIQUES RECENTES</span>
                         <div class="mt-6">
                             {% for infographie in infographies %}
-                                <a href="{% url 'infographie' infographie.id %}" class="block hover:bg-gray-100">
-                                    <div class="flex items-center mt-2">
+                                <a href="{% url 'infographie' infographie.id %}" class="block hover:bg-gray-100 py-1 rounded">
+                                    <div class="flex items-center">
                                         <img src="{% static 'graphique.png' %}" class="h-5 mr-1">
                                         <span class="text-gray-600">{{ infographie.titre }}</span>
                                     </div>
@@ -48,8 +48,8 @@
                 <span class="font-medium text-gray-600 mt-3">ARTICLES RECENTS</span>
                 <div class="mt-6">
                     {% for article in articles %}
-                        <a href="{% url 'article' article.id %}" class="block hover:bg-gray-100">
-                            <div class="flex items-center mt-2">
+                        <a href="{% url 'article' article.id %}" class="block hover:bg-gray-100 py-1 rounded">
+                            <div class="flex items-center">
                                 <img src="{% static 'article.png' %}" class="h-5 mr-1">
                                 <span class="text-gray-600">{{ article.titre }}</span>
                             </div>
@@ -59,9 +59,10 @@
             </div>
         </div>
         <div class="max-w-6xl w-full p-14 border border-gray-300">
-           <form class="w-full">   
+           <form  method="POST" class="w-full">   
                 <div class="relative">
-                    <input type="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Chercher dans ce thème" required>
+                    {% csrf_token %}
+                    {{ form.result }}
                     <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
                 </div>
             </form> 

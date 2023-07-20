@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 from ..models import Theme, Infographie, Article
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
@@ -51,10 +51,27 @@ def index(request):
 
 def recherche(request):
     form = RechercheForm(request.GET)
-    recherche = request.GET.get("result", None)
 
-    articles = Article.objects.order_by("-pub_date")
-    infographies = Infographie.objects.order_by("-pub_date")
+    theme_id = request.GET.get("theme", None)
+    secteur_id = request.GET.get("secteur", None)
+    recherche = request.GET.get("result", None)
+    selection = request.GET.get("selection", None)
+
+    if theme_id:
+        articles = Article.objects.filter(theme__id=theme_id).order_by("-pub_date")
+        infographies = Infographie.objects.filter(theme__id=theme_id).order_by(
+            "-pub_date"
+        )
+    elif secteur_id:
+        articles = Article.objects.filter(theme__secteur__id=secteur_id).order_by(
+            "-pub_date"
+        )
+        infographies = Infographie.objects.filter(
+            theme__secteur__id=secteur_id
+        ).order_by("-pub_date")
+    else:
+        articles = Article.objects.order_by("-pub_date")
+        infographies = Infographie.objects.order_by("-pub_date")
 
     if recherche:
         articles = articles.filter(
@@ -65,7 +82,11 @@ def recherche(request):
         )
 
     results = list(articles) + list(infographies)
-    results.sort(key=lambda x: x.pub_date, reverse=True)
+
+    if selection == "populaire":
+        results.sort(key=lambda x: x.compteur, reverse=True)
+    else:
+        results.sort(key=lambda x: x.pub_date, reverse=True)
 
     nombre_total = len(articles) + len(infographies)
 
@@ -83,5 +104,7 @@ def recherche(request):
             "page": page,
             "form": form,
             "recherche": recherche,
+            "selection": selection,
+            "theme_id": theme_id,
         },
     )

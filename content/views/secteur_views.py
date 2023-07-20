@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from ..models import Secteur, Infographie, Article
 from datetime import datetime, timedelta
 from ..forms.rechercheForm import RechercheForm
 from django.db.models import Q
+from django.urls import reverse
 
 
 def liste_secteur(request):
@@ -35,6 +36,15 @@ def secteur(request, id):
 
     infographies_recentes = Infographie.objects.all().order_by("-pub_date")[:10]
 
+    form = RechercheForm(request.POST)
+    if form.is_valid():
+        recherche = form.cleaned_data.get("result", None)
+        if recherche:
+            url = (
+                reverse("recherche") + f"?result={recherche}" + f"&secteur={secteur.id}"
+            )
+            return redirect(url)
+
     return render(
         request,
         "secteur.html",
@@ -43,5 +53,6 @@ def secteur(request, id):
             "infographies_populaires": infographies_populaires,
             "infographies_recentes": infographies_recentes,
             "articles_populaires": articles_populaires,
+            "form": form,
         },
     )
