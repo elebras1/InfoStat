@@ -5,17 +5,15 @@ from .views import (
     views,
     theme_views,
     contact_views,
-    user_views,
 )
 from django.urls import include, path
 
 urlpatterns = [
-    path("secteur", secteur_views.liste_secteur, name="liste_secteur"),
+    path("secteur/", secteur_views.liste_secteur, name="liste_secteur"),
     path("secteur/<int:id>/", secteur_views.secteur, name="secteur"),
     path("infographie/<int:id>/", infographie_views.infographie, name="infographie"),
     path("article/<int:id>/", article_views.article, name="article"),
     path("theme/<int:id>/", theme_views.theme, name="theme"),
     path("recherche/", views.recherche, name="recherche"),
-    path("contact", contact_views.contact, name="contact"),
-    path("login", user_views.login, name="login"),
+    path("contact/", contact_views.contact, name="contact"),
 ]

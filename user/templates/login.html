@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="flex flex-col items-center">
+        <div class="flex flex-col justify-around items-center max-w-5xl w-full py-28 md:flex-row">
+            <div class="flex flex-col justify-content">
+                <span class="text-2xl	font-light">Connexion</span>
+                <form method="post" class="mt-6">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Pseudo</label>
+                        <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" placeholder="pseudo*" class="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800 mt-4">Mot de passe</label>
+                        <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" placeholder="••••••••*" class="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5">Se connecter</button>
+                    <span>Vous n'avez pas encore de compte? <a src=""><span class="text-blue-600 hover:underline">inscription</span></a></span>
+                </form>
+            </div>
+            <img src="{% static 'undraw_login.svg' %}" class="w-2/5 mt-14 md:mt-0">
+        </div>
+    </div>
+{% endblock body %}
