@@ -2,6 +2,42 @@
 {% load static %}
 
 {% block body %}
-{{form}}
+<div class="flex flex-col items-center">
+    <div class="flex flex-col justify-around items-center max-w-5xl w-full py-28 md:flex-row">
+        <div class="flex flex-col justify-content">
+            <span class="text-2xl font-light">Inscription</span>
+            <form method="post" class="mt-6" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="{{ form.username.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-800">Pseudo*</label>
+                    {{ form.username }}
+                </div>
+                <div class="mb-4">
+                    <label for="{{ form.email.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-800">Email*</label>
+                    {{ form.email }}
+                </div>
+                <div class="mb-4">
+                    <label for="{{ form.last_name.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-800">Prénom</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="mb-4">
+                    <label for="{{ form.first_name.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-800">Nom</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="mb-4">
+                    <label for="{{ form.password.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-800">Mot de passe*</label>
+                    {{ form.password }}
+                </div>
+                <div class="mb-4">
+                    <label for="{{ form.password_confirmation.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-800">Confirmation du mot de passe*</label>
+                    {{ form.password_confirmation }}
+                </div>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5">Inscription</button>
+                <span>Vous avez déjà un compte? <a href="{% url 'login' %}"><span class="text-blue-600 hover:underline">connexion</span></a></span>
+            </form>
+        </div>
+        <img src="{% static 'undraw_register.svg' %}" class="w-2/5 mt-14 md:mt-0">
+    </div>
+</div>
 {% endblock body %}
 
