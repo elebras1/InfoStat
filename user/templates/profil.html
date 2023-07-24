@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="flex justify-center">
+        <div class="max-w-6xl w-full mt-14">
+            <div class="flex items-center">
+                <span class="text-blue-600 mr-2">Votre profil</span>
+                <img src={% static 'arrow.svg' %} class="h-3 mr-2">
+            </div>
+            <div class="mt-6 w-full flex flex-col lg:flex-row justify-center">
+                <div class="h-auto w-1/3 shadow-custom rounded mr-6">
+                    <img src={% static "default_profil.png" %} class="p-3">
+                </div>
+                <div class="flex flex-col w-2/3">
+                    <div class="shadow-custom rounded mb-6 p-5">
+                        <span class="text-gray-600 font-medium">Informations</span>
+                        <div class="text-gray-600 flex flex-col">
+                            <span class="m-2">{{user.username}}</span>
+                            <div class="m-2">
+                                <span>{{user.last_name}}</span>
+                                <span>{{user.first_name}}</span>
+                            </div>
+                            <span class="m-2">{{user.email}}</span>
+                            <span class="m-2"><span class="text-gray-900">Date de création du profil :</span> {{ user.date_joined|date:"Y-m-d" }}</span>
+                        </div>
+                    </div>
+                    <div class="shadow-custom rounded mb-6 p-5">
+                        <a href="{% url 'index' %}" class="text-gray-100 hover:bg-blue-800 bg-blue-600 hover:text-white px-3 py-2 rounded text-sm mr-3">Modifier le mot de passe</a>
+                        <a href="{% url 'index' %}" class="text-gray-100 hover:bg-blue-800 bg-blue-600 hover:text-white px-3 py-2 rounded text-sm mr-3">Modifier le profil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col items-center mt-14">
+        <form method="get" class="max-w-6xl w-full">
+            <div class="relative">
+                {{ form.result }}
+                <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">rechercher</button>
+            </div>
+        </form>
+        <div class="max-w-6xl mt-14 w-full">
+            <span class="text-xl text-gray-600">VOS STATISTIQUES FAVORITES</span>
+        </div>
+        <div class="max-w-6xl mt-6 w-full">
+            <div class="grid grid-cols-2 gap-3">
+                {% for infographie in infographies%}
+                    <div class="shadow-custom rounded p-3 w-full">
+                        <div class="flex">
+                            <img src={% static infographie.graphique %} class="h-16">
+                            <div class="flex flex-col ml-3">
+                                <span class="font-medium text-gray-600">{{infographie.theme}}</span>
+                                <a href="{% url 'infographie' infographie.id %}" class="text-gray-600 hover:text-blue-600">{{infographie.titre}}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="max-w-6xl mt-14 w-full">
+            <span class="text-xl text-gray-600">VOS ARTICLES FAVORIS</span> 
+        </div>
+        <div class="max-w-6xl mt-6 mb-14">
+            <div class="grid grid-cols-4 gap-3">
+                {% for article in articles %}
+                    <div class="shadow-custom rounded p-3">
+                        <div class="flex">
+                            <div class="flex flex-col ml-3">
+                                <span class="font-medium text-gray-600">{{article.theme}}</span>
+                                <a href="{% url 'article' article.id %}" class="text-gray-600 hover:text-blue-600">{{article.titre}}</a>
+                                <span class="text-gray-600 mt-3 h-40 overflow-hidden">{{article.description}}</span>
+                                <div class="flex items-center justify-end mt-auto">
+                                    <img src={% static 'arrow.svg' %} class="h-3 mr-1">
+                                    <a href="{% url 'article' article.id %}" class="text-blue-600 mr-2 hover:underline">lire la suite</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
+

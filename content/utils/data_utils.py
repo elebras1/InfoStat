@@ -111,7 +111,7 @@ def generate_user(num):
 
 def generate_favori():
     for ifg in infographies:
-        for _ in range(random.randint(0, 10)):
+        for _ in range(random.randint(0, 3)):
             try:
                 user_idx = random.randint(0, len(users) - 1)
                 Infographie_favori.objects.get_or_create(
@@ -121,7 +121,7 @@ def generate_favori():
                 pass
 
     for article in articles:
-        for _ in range(random.randint(0, 10)):
+        for _ in range(random.randint(0, 3)):
             try:
                 user_idx = random.randint(0, len(users) - 1)
                 Article_favori.objects.get_or_create(

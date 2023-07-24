@@ -5,6 +5,9 @@ from django.urls import reverse
 from django.contrib import messages
 from django.shortcuts import render, HttpResponseRedirect
 from .forms.registration_form import RegistrationForm
+from content.models import Infographie, Article
+from content.forms.rechercheForm import RechercheForm
+from django.db.models import Q
 
 
 class CustomLoginView(LoginView):
@@ -68,3 +71,35 @@ def registration(request):
         form = RegistrationForm()
 
     return render(request, "registration.html", {"form": form})
+
+
+def profil(request):
+    user = request.user
+
+    infographies = Infographie.objects.filter(infographie_favori__user=user).order_by(
+        "-pub_date"
+    )
+    articles = Article.objects.filter(article_favori__user=user).order_by("-pub_date")
+
+    form = RechercheForm(request.GET)
+
+    recherche = request.GET.get("result", None)
+
+    if recherche:
+        infographies = infographies.filter(
+            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+        )
+        articles = articles.filter(
+            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+        )
+
+    return render(
+        request,
+        "profil.html",
+        {
+            "articles": articles,
+            "infographies": infographies,
+            "user": user,
+            "form": form,
+        },
+    )
