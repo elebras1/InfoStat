@@ -1,2 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block body %}
+<div class="flex flex-col items-center">
+    <div class="flex flex-col justify-around items-center max-w-5xl w-full py-28 md:flex-row">
+        <div class="flex flex-col justify-content">
+            <span class="text-2xl font-light">Vous avez été <span class="font-bold">déconnecté</span>.</span>
+            <span class="text-2xl font-light mt-2">Vous souhaitez continuer votre visite ?</span>
+            <div class="flex mt-3">
+                <a href="{% url 'index' %}" class="text-gray-100 hover:bg-blue-800 bg-blue-600 hover:text-white px-3 py-2 rounded text-sm mr-3">Accueil</a>
+                <a href="{% url 'login' %}" class="text-gray-100 hover:bg-blue-800 bg-blue-600 hover:text-white px-3 py-2 rounded text-sm">Connexion</a>
+            </div>
+        </div>
+        <img src="{% static 'undraw_logout.svg' %}" class="w-2/5 mt-14 md:mt-0">
+    </div>
+</div>
+{% endblock body %}
+
