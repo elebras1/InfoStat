@@ -4,9 +4,14 @@ from ..models import (
     Infographie,
     Article,
     Region,
-    Infographie_region,
-    Article_region,
+    Infographie_favori,
+    Article_favori,
 )
+from django.contrib.auth.models import User
+
+from django.db import IntegrityError
+
+
 from faker import Faker
 import random
 
@@ -15,6 +20,7 @@ random.seed(10)
 fake = Faker()
 secteurs = []
 themes = []
+users = []
 infographies = []
 articles = []
 regions = []
@@ -46,6 +52,13 @@ def generate_theme(num):
         theme.save()
 
 
+def generate_region(num):
+    for _ in range(num):
+        region = Region.objects.create(nom=fake.word())
+        regions.append(region)
+        region.save()
+
+
 def generate_infographie(num):
     for _ in range(num):
         infographie = Infographie.objects.create(
@@ -57,6 +70,7 @@ def generate_infographie(num):
             compteur=random.randint(0, 3000),
             pub_date=fake.date(),
             theme=themes[random.randint(0, len(themes) - 1)],
+            region=regions[random.randint(0, len(regions) - 1)],
         )
         infographies.append(infographie)
         infographie.save()
@@ -71,27 +85,46 @@ def generate_article(num):
             compteur=random.randint(0, 3000),
             pub_date=fake.date(),
             theme=themes[random.randint(0, len(themes) - 1)],
+            region=regions[random.randint(0, len(regions) - 1)],
         )
         articles.append(article)
         article.save()
 
 
-def generate_region(num):
+def generate_user(num):
     for _ in range(num):
-        region = Region.objects.create(nom=fake.word())
-        regions.append(region)
-        region.save()
-
-
-def generate_link():
-    for ifg in infographies:
-        infographie_region = Infographie_region.objects.create(
-            infographie=ifg, region=regions[random.randint(0, len(regions) - 1)]
+        user = User.objects.create(
+            password="password",
+            is_superuser=False,
+            username=fake.word(),
+            first_name=fake.name(),
+            last_name=fake.name(),
+            email=fake.email(),
+            is_staff=False,
+            is_active=True,
+            date_joined=fake.date(),
         )
-        infographie_region.save()
+    users.append(user)
+    user.save()
+
+
+def generate_favori():
+    for ifg in infographies:
+        for _ in range(random.randint(0, 10)):
+            try:
+                user_idx = random.randint(0, len(users) - 1)
+                Infographie_favori.objects.get_or_create(
+                    infographie=ifg, user=users[user_idx]
+                )
+            except IntegrityError:
+                pass
 
     for article in articles:
-        article_region = Article_region.objects.create(
-            article=article, region=regions[random.randint(0, len(regions) - 1)]
-        )
-        article_region.save()
+        for _ in range(random.randint(0, 10)):
+            try:
+                user_idx = random.randint(0, len(users) - 1)
+                Article_favori.objects.get_or_create(
+                    article=article, user=users[user_idx]
+                )
+            except IntegrityError:
+                pass

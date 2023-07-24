@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Secteur(models.Model):
@@ -25,10 +26,18 @@ class Theme(models.Model):
         return str(self.nom)
 
 
+class Region(models.Model):
+    nom = models.CharField(max_length=80)
+
+    def __str__(self):
+        return str(self.nom)
+
+
 class Infographie(models.Model):
     theme = models.ForeignKey(
         Theme, on_delete=models.CASCADE, related_name="infographies"
     )
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
     titre = models.CharField(max_length=80)
     description = models.TextField(max_length=3000)
     graphique = models.CharField(max_length=120)
@@ -47,6 +56,7 @@ class Infographie(models.Model):
 
 class Article(models.Model):
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, related_name="articles")
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
     titre = models.CharField(max_length=80)
     description = models.TextField(max_length=15000)
     source = models.CharField(max_length=120)
@@ -61,24 +71,17 @@ class Article(models.Model):
         return str(self.titre)
 
 
-class Region(models.Model):
-    nom = models.CharField(max_length=80)
-
-    def __str__(self):
-        return str(self.nom)
-
-
-class Infographie_region(models.Model):
-    infographie = models.ForeignKey(Infographie, on_delete=models.CASCADE)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ("infographie", "region")
-
-
-class Article_region(models.Model):
+class Article_favori(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ("article", "region")
+        unique_together = ("article", "user")
+
+
+class Infographie_favori(models.Model):
+    infographie = models.ForeignKey(Infographie, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("infographie", "user")
