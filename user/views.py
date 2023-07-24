@@ -13,6 +13,18 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse("index")
 
+    def form_invalid(self, form):
+        # Appeler la méthode form_invalid() de la classe parent pour effectuer le traitement par défaut
+        response = super().form_invalid(form)
+
+        # Ajouter un message d'erreur personnalisé
+        messages.error(
+            self.request,
+            "Désolé, votre nom d’utilisateur ou mot de passe est incorrect.",
+        )
+
+        return response
+
 
 class CustomLogoutView(LogoutView):
     template_name = "logout.html"
