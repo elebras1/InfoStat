@@ -93,7 +93,7 @@ def generate_article(num):
 
 def generate_user(num):
     for _ in range(num):
-        user = User.objects.create(
+        user = User.objects.create_user(
             password="password",
             is_superuser=False,
             username=fake.word(),
@@ -104,8 +104,9 @@ def generate_user(num):
             is_active=True,
             date_joined=fake.date(),
         )
-    users.append(user)
-    user.save()
+
+        users.append(user)
+        user.save()
 
 
 def generate_favori():

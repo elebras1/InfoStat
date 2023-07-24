@@ -56,7 +56,6 @@ def registration(request):
                     first_name=first_name,
                     password=password,
                 )
-                print(user)
 
                 user.save()
 
