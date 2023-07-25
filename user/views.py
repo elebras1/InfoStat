@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse
 from django.contrib import messages
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from .forms.registration_form import RegistrationForm
 from .forms.profil_form import ProfilForm
+from .forms.password_form import PasswordForm
 from content.models import Infographie, Article
 from content.forms.rechercheForm import RechercheForm
 from django.db.models import Q
@@ -112,8 +113,35 @@ def profil_edit(request):
     if request.method == "POST":
         form = ProfilForm(request.POST, instance=user)
         if form.is_valid():
-            form.save()  # Sauvegardez les modifications dans la base de données si le formulaire est valide
+            form.save()
             return redirect("profil")
     else:
         form = ProfilForm(instance=user)
     return render(request, "profil_edit.html", {"form": form})
+
+
+def password_edit(request):
+    user = request.user
+
+    if request.method == "POST":
+        form = PasswordForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data["password"]
+            new_password = form.cleaned_data["new_password"]
+            new_password_confirmation = form.cleaned_data["new_password_confirmation"]
+
+            if user.check_password(password):
+                if new_password == new_password_confirmation:
+                    user.set_password(new_password)
+                    user.save()
+                    return redirect("login")
+                else:
+                    messages.error(
+                        request,
+                        "Le nouveau mot de passe saisis ne correspond pas celui de la confirmation.",
+                    )
+            else:
+                messages.error(request, "Le mot de passe ne correspond pas.")
+    else:
+        form = PasswordForm()
+    return render(request, "password_edit.html", {"form": form})
