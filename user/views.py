@@ -3,8 +3,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse
 from django.contrib import messages
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, redirect
 from .forms.registration_form import RegistrationForm
+from .forms.profil_form import ProfilForm
 from content.models import Infographie, Article
 from content.forms.rechercheForm import RechercheForm
 from django.db.models import Q
@@ -103,3 +104,16 @@ def profil(request):
             "form": form,
         },
     )
+
+
+def profil_edit(request):
+    user = request.user
+
+    if request.method == "POST":
+        form = ProfilForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()  # Sauvegardez les modifications dans la base de données si le formulaire est valide
+            return redirect("profil")
+    else:
+        form = ProfilForm(instance=user)
+    return render(request, "profil_edit.html", {"form": form})
