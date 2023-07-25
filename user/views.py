@@ -119,11 +119,17 @@ def profil(request):
 
 def profil_edit(request):
     user = request.user
+    user_profile = get_object_or_404(UserProfile, user=user)
 
     if request.method == "POST":
         form = ProfilForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
+            photo = request.FILES.get("photo")
+            if photo != None:
+                user_profile.photo = photo
+                user_profile.save()
+
             return redirect("profil")
     else:
         form = ProfilForm(instance=user)
