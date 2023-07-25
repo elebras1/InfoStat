@@ -7,6 +7,8 @@ from ..models import (
     Infographie_favori,
     Article_favori,
 )
+
+from user.models import UserProfile
 from django.contrib.auth.models import User
 
 from django.db import IntegrityError
@@ -105,8 +107,11 @@ def generate_user(num):
             date_joined=fake.date(),
         )
 
+        user_profile = UserProfile.objects.create(user=user)
+
         users.append(user)
         user.save()
+        user_profile.save()
 
 
 def generate_favori():

@@ -1,15 +1,16 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import check_password
+from .models import UserProfile
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse
 from django.contrib import messages
-from django.shortcuts import render, HttpResponseRedirect, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms.registration_form import RegistrationForm
 from .forms.profil_form import ProfilForm
 from .forms.password_form import PasswordForm
 from content.models import Infographie, Article
 from content.forms.rechercheForm import RechercheForm
 from django.db.models import Q
+from django.http import Http404
 
 
 class CustomLoginView(LoginView):
@@ -45,7 +46,7 @@ def registration(request):
             first_name = form.cleaned_data["first_name"]
             password = form.cleaned_data["password"]
             password_confirmation = form.cleaned_data["password_confirmation"]
-            print("ok")
+            photo = request.FILES.get("photo")
 
             if password != password_confirmation:
                 messages.error(
@@ -61,10 +62,12 @@ def registration(request):
                     first_name=first_name,
                     password=password,
                 )
+                userprofile = UserProfile.objects.create(user=user, photo=photo)
+                userprofile.save()
 
                 user.save()
 
-                return HttpResponseRedirect("login.html")
+                return redirect("login")
             else:
                 messages.error(request, "Le nom d'utilisateur existe déjà.")
                 return render(request, "registration.html", {"form": form})
@@ -77,6 +80,12 @@ def registration(request):
 
 def profil(request):
     user = request.user
+
+    try:
+        profil = get_object_or_404(UserProfile, user=user)
+        photo_profil = profil.photo
+    except Http404:
+        photo_profil = None
 
     infographies = Infographie.objects.filter(infographie_favori__user=user).order_by(
         "-pub_date"
@@ -103,6 +112,7 @@ def profil(request):
             "infographies": infographies,
             "user": user,
             "form": form,
+            "photo_profil": photo_profil,
         },
     )
 
