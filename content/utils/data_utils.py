@@ -113,6 +113,39 @@ def generate_user(num):
         user.save()
         user_profile.save()
 
+    for i in range(5):
+        # admin
+        if i == 0:
+            user = User.objects.create_user(
+                password="password",
+                is_superuser=True,
+                username=fake.word(),
+                first_name=fake.name(),
+                last_name=fake.name(),
+                email=fake.email(),
+                is_staff=True,
+                is_active=True,
+                date_joined=fake.date(),
+            )
+        # superuser
+        else:
+            user = User.objects.create_user(
+                password="password",
+                is_superuser=True,
+                username=fake.word(),
+                first_name=fake.name(),
+                last_name=fake.name(),
+                email=fake.email(),
+                is_staff=False,
+                is_active=True,
+                date_joined=fake.date(),
+            )
+        user_profile = UserProfile.objects.create(user=user)
+
+        users.append(user)
+        user.save()
+        user_profile.save()
+
 
 def generate_favori():
     for ifg in infographies:
