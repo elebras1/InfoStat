@@ -26,6 +26,7 @@ users = []
 infographies = []
 articles = []
 regions = []
+superusers = []
 
 
 def generate_secteurs(num):
@@ -61,46 +62,14 @@ def generate_region(num):
         region.save()
 
 
-def generate_infographie(num):
-    for _ in range(num):
-        infographie = Infographie.objects.create(
-            titre=fake.sentence(),
-            description=fake.text(max_nb_chars=2500),
-            graphique="default_graphique.svg",
-            source="https://www.cairn.fr",
-            periode_enquete="2018 - 2022",
-            compteur=random.randint(0, 3000),
-            pub_date=fake.date(),
-            theme=themes[random.randint(0, len(themes) - 1)],
-            region=regions[random.randint(0, len(regions) - 1)],
-        )
-        infographies.append(infographie)
-        infographie.save()
-
-
-def generate_article(num):
-    for _ in range(num):
-        article = Article.objects.create(
-            titre=fake.sentence(),
-            description=fake.text(max_nb_chars=14000),
-            source="https://www.cairn.fr",
-            compteur=random.randint(0, 3000),
-            pub_date=fake.date(),
-            theme=themes[random.randint(0, len(themes) - 1)],
-            region=regions[random.randint(0, len(regions) - 1)],
-        )
-        articles.append(article)
-        article.save()
-
-
 def generate_user(num):
     for _ in range(num):
         user = User.objects.create_user(
             password="password",
             is_superuser=False,
             username=fake.word(),
-            first_name=fake.name(),
-            last_name=fake.name(),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
             email=fake.email(),
             is_staff=False,
             is_active=True,
@@ -120,8 +89,8 @@ def generate_user(num):
                 password="password",
                 is_superuser=True,
                 username=fake.word(),
-                first_name=fake.name(),
-                last_name=fake.name(),
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
                 email=fake.email(),
                 is_staff=True,
                 is_active=True,
@@ -133,8 +102,8 @@ def generate_user(num):
                 password="password",
                 is_superuser=True,
                 username=fake.word(),
-                first_name=fake.name(),
-                last_name=fake.name(),
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
                 email=fake.email(),
                 is_staff=False,
                 is_active=True,
@@ -142,9 +111,45 @@ def generate_user(num):
             )
         user_profile = UserProfile.objects.create(user=user)
 
+        superusers.append(user)
+
         users.append(user)
         user.save()
         user_profile.save()
+
+
+def generate_infographie(num):
+    for _ in range(num):
+        infographie = Infographie.objects.create(
+            titre=fake.sentence(),
+            description=fake.text(max_nb_chars=2500),
+            graphique="default_graphique.svg",
+            source="https://www.cairn.fr",
+            periode_enquete="2018 - 2022",
+            compteur=random.randint(0, 3000),
+            pub_date=fake.date(),
+            theme=themes[random.randint(0, len(themes) - 1)],
+            region=regions[random.randint(0, len(regions) - 1)],
+            user=superusers[random.randint(0, len(superusers) - 1)],
+        )
+        infographies.append(infographie)
+        infographie.save()
+
+
+def generate_article(num):
+    for _ in range(num):
+        article = Article.objects.create(
+            titre=fake.sentence(),
+            description=fake.text(max_nb_chars=14000),
+            source="https://www.cairn.fr",
+            compteur=random.randint(0, 3000),
+            pub_date=fake.date(),
+            theme=themes[random.randint(0, len(themes) - 1)],
+            region=regions[random.randint(0, len(regions) - 1)],
+            user=superusers[random.randint(0, len(superusers) - 1)],
+        )
+        articles.append(article)
+        article.save()
 
 
 def generate_favori():

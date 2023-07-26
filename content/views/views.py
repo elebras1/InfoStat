@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
 from ..models import Theme, Infographie, Article
+from user.models import UserProfile
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
 from ..forms.rechercheForm import RechercheForm
@@ -36,6 +37,11 @@ def index(request):
             url = reverse("recherche") + f"?result={recherche}"
             return redirect(url)
 
+    try:
+        superusers = UserProfile.objects.filter(user__is_superuser=True)
+    except UserProfile.DoesNotExist:
+        raise Http404("")
+
     return render(
         request,
         "index.html",
@@ -45,6 +51,7 @@ def index(request):
             "themes_random": themes_random,
             "themes_new": themes_new,
             "form": form,
+            "superusers": superusers,
         },
     )
 

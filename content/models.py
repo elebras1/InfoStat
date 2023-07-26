@@ -45,6 +45,7 @@ class Infographie(models.Model):
     periode_enquete = models.TextField(max_length=12)
     compteur = models.IntegerField(null=True, default=0)
     pub_date = models.DateField("date de publication")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
     @property
     def type(self):
@@ -62,6 +63,7 @@ class Article(models.Model):
     source = models.CharField(max_length=120)
     compteur = models.IntegerField(null=True, default=0)
     pub_date = models.DateField("date de publication")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
     @property
     def type(self):
