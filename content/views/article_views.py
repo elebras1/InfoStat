@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from ..models import Article, Infographie, Article_favori
+from ..forms.article_form import ArticleForm
 
 
 def article(request, id):
@@ -54,3 +55,36 @@ def article(request, id):
             "etat_favori": etat_favori,
         },
     )
+
+
+def article_new(request):
+    user = request.user
+
+    if request.method == "POST":
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.user = user
+            article.save()
+            return redirect(reverse("article", args=[article.id]))
+    else:
+        form = ArticleForm()
+
+    return render(request, "article_new.html", {"form": form})
+
+
+def article_edit(request, id):
+    article = get_object_or_404(Article, pk=id)
+    user = request.user
+
+    if request.method == "POST":
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.user = user
+            article.save()
+            return redirect(reverse("article", args=[article.id]))
+    else:
+        form = ArticleForm(instance=article)
+
+    return render(request, "article_new.html", {"form": form})

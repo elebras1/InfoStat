@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="flex flex-col items-center">
+        <div class="flex flex-col justify-around items-center max-w-5xl w-full py-14 md:flex-row">
+            <div class="flex flex-col justify-content w-3/5">
+                <span class="text-2xl font-light">Ajouter un article</span>
+                <form method="post" class="mt-6">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Titre*</label>
+                        {{form.titre}}
+                    </div>
+                    <div class="form-group mt-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Description*</label>
+                        {{form.description}}
+                    </div>
+                    <div class="form-group mt-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Source*</label>
+                        {{form.source}}
+                    </div>
+                    <div class="form-group mt-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Thème*</label>
+                        {{form.theme}}
+                    </div>
+                    <div class="form-group mt-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Région*</label>
+                        {{form.region}}
+                    </div>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5">Envoyer</button>
+                </form>
+            </div>
+            <img src="{% static 'undraw_add_article.svg' %}" class="mt-14 md:mt-0 w-1/4">
+        </div>
+    </div>
+{% endblock body %}
+
+

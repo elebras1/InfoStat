@@ -14,4 +14,6 @@ urlpatterns = [
     path("article/<int:id>/", article_views.article, name="article"),
     path("theme/<int:id>/", theme_views.theme, name="theme"),
     path("recherche/", views.recherche, name="recherche"),
+    path("article/new/", article_views.article_new, name="article_new"),
+    path("article/edit/<int:id>/", article_views.article_edit, name="article_edit"),
 ]

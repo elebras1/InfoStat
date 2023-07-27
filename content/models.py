@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 
 class Secteur(models.Model):
     nom = models.CharField(max_length=80)
     description = models.TextField(max_length=3000)
     illustration = models.CharField(max_length=120, null=True)
-    pub_date = models.DateField("date de publication")
+    pub_date = models.DateField("date de publication", default=date.today)
 
     def __str__(self):
         return str(self.nom)
@@ -20,7 +21,7 @@ class Theme(models.Model):
     description = models.CharField(max_length=3000)
     illustration = models.CharField(max_length=120, null=True)
     compteur = models.IntegerField(null=True, default=0)
-    pub_date = models.DateField("date de publication")
+    pub_date = models.DateField("date de publication", default=date.today)
 
     def __str__(self):
         return str(self.nom)
@@ -44,7 +45,7 @@ class Infographie(models.Model):
     source = models.CharField(max_length=120)
     periode_enquete = models.TextField(max_length=12)
     compteur = models.IntegerField(null=True, default=0)
-    pub_date = models.DateField("date de publication")
+    pub_date = models.DateField("date de publication", default=date.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
     @property
@@ -62,7 +63,7 @@ class Article(models.Model):
     description = models.TextField(max_length=15000)
     source = models.CharField(max_length=120)
     compteur = models.IntegerField(null=True, default=0)
-    pub_date = models.DateField("date de publication")
+    pub_date = models.DateField("date de publication", default=date.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
     @property
