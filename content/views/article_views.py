@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from ..models import Article, Infographie, Article_favori
 from ..forms.article_form import ArticleForm
+import os
+from ..utils.file_utils import generate_temporary_txt_file, generate_temporary_docx_file
+from django.http import HttpResponse
 
 
 def article(request, id):
@@ -27,23 +30,52 @@ def article(request, id):
     else:
         etat_favori = False
 
-    if request.method == "POST" and user.is_authenticated:
+    if (
+        request.method == "POST"
+        and user.is_authenticated
+        and request.POST.get("favori") == "favori"
+    ):
         if not favori:
             new_favori = Article_favori.objects.create(
                 user=user,
                 article=article,
             )
             etat_favori = True
-            print("insert")
         else:
             Article_favori.objects.filter(
                 user=user,
                 article=article,
             ).delete()
             etat_favori = False
-            print("delete")
 
-    print(etat_favori)
+    # Vérifiez si le formulaire de téléchargement a été soumis
+    if request.method == "POST" and "download_format" in request.POST:
+        format = request.POST.get("download_format")
+        if format == "txt":
+            txt_content = (
+                article.description
+            )  # Mettez le contenu approprié de l'article ici
+            filepath = generate_temporary_txt_file(article.titre, txt_content)
+            with open(filepath, "r", encoding="utf-8") as file:
+                response = HttpResponse(file.read(), content_type="text/plain")
+                response[
+                    "Content-Disposition"
+                ] = f'attachment; filename="{os.path.basename(filepath)}"'
+            os.remove(filepath)
+            return response
+
+        if format == "docx":
+            txt_content = (
+                article.description
+            )  # Mettez le contenu approprié de l'article ici
+            filepath = generate_temporary_docx_file(article.titre, txt_content)
+            with open(filepath, "rb") as file:
+                response = HttpResponse(file.read(), content_type="text/plain")
+                response[
+                    "Content-Disposition"
+                ] = f'attachment; filename="{os.path.basename(filepath)}"'
+            os.remove(filepath)
+            return response
 
     return render(
         request,
