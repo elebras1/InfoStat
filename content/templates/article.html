@@ -32,21 +32,24 @@
                     <div class="shadow-custom rounded mb-6 p-5">
                         <span class="text-gray-600 font-medium">Téléchargement</span>
                         <div class="flex justify-around bg-gray-200 mt-2 rounded text-gray-600">
-                            <form method="post">
-                                {% csrf_token %}
-                                <div class="p-1 m-3 flex items-center bg-white rounded">
-                                    <img src="{% static 'image-solid.svg' %}" class="h-4 mr-1">
-                                    <button type="submit" name="download_format" value="txt">TXT</button>
-                                </div>
-                            </form>
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                <div class="p-1 m-3 flex items-center bg-white rounded">
-                                    <img src="{% static 'image-solid.svg' %}" class="h-4 mr-1">
-                                    <button type="submit" name="download_format" value="docx">DOCX</button>
-                                </div>
-                            </form>
+                            <div class="p-1 m-3 flex items-center bg-white rounded">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="flex items-center bg-white rounded">
+                                        <img src="{% static 'image-solid.svg' %}" class="h-4 mr-1">
+                                        <button type="submit" name="download_format" value="txt">TXT</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="p-1 m-3 flex items-center bg-white rounded">  
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="flex items-center">
+                                        <img src="{% static 'image-solid.svg' %}" class="h-4 mr-1">
+                                        <button type="submit" name="download_format" value="docx">DOCX</button>
+                                    </div>
+                                </form>
+                            </div>
                             <div class="p-1 m-3 flex items-center">
                                 <form method="post" action="{% url 'article' article.id %}">
                                     {% csrf_token %}

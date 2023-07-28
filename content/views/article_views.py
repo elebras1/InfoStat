@@ -113,7 +113,6 @@ def article_edit(request, id):
         form = ArticleForm(request.POST, instance=article)
         if form.is_valid():
             article = form.save(commit=False)
-            article.user = user
             article.save()
             return redirect(reverse("article", args=[article.id]))
     else:
