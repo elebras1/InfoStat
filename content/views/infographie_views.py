@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import Http404
 from ..models import Infographie, Article, Infographie_favori
+from ..forms.infographie_form import InfographieForm
+from ..utils.graphique_utils import scatter
 
 
 def infographie(request, id):
@@ -49,4 +51,40 @@ def infographie(request, id):
             "article_selection": article_selection,
             "etat_favori": etat_favori,
         },
+    )
+
+
+def infographie_new(request):
+    user = request.user
+    graph_html = None
+    if request.method == "POST":
+        form = InfographieForm(request.POST)
+        if form.is_valid():
+            titre = form.cleaned_data["titre"]
+            type_graphique = form.cleaned_data["type_graphique"]
+            x_titre = form.cleaned_data["x_titre"]
+            y_titre = form.cleaned_data["y_titre"]
+            x_valeurs = form.cleaned_data["x_valeurs"]
+            y_valeurs = form.cleaned_data["y_valeurs"]
+            submit_type = request.POST.get("submit_type")
+
+            x_valeurs = list(x_valeurs.split("/"))
+            x_valeurs = [float(valeur) for valeur in x_valeurs]
+            y_valeurs = list(y_valeurs.split("/"))
+            y_valeurs = [float(valeur) for valeur in y_valeurs]
+
+            if submit_type == "preview":
+                graph_html = scatter(x_valeurs, y_valeurs, titre, x_titre, y_titre)
+
+            elif submit_type == "send":
+                print("send")
+                infographie = form.save(commit=False)
+                infographie.user = user
+                infographie.save()
+                return redirect(reverse("infographie", args=[infographie.id]))
+    else:
+        form = InfographieForm()
+
+    return render(
+        request, "infographie_new.html", {"form": form, "graph_html": graph_html}
     )

@@ -43,7 +43,7 @@ class Infographie(models.Model):
     description = models.TextField(max_length=3000)
     graphique = models.CharField(max_length=120)
     source = models.CharField(max_length=120)
-    periode_enquete = models.TextField(max_length=12)
+    periode_enquete = models.CharField(max_length=12)
     compteur = models.IntegerField(null=True, default=0)
     pub_date = models.DateField("date de publication", default=date.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
