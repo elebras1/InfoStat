@@ -4,10 +4,19 @@ import plotly.offline as opy
 import pandas as pd
 
 
-def scatter(x_valeurs, y_valeurs, titre, x_titre, y_titre):
-    df = pd.DataFrame(dict(x=x_valeurs, y=y_valeurs))
+def line(x_values_list, y_values_list, titre, x_titre, y_titre, noms_courbes):
+    data = []
+    for x_values, y_values, nom_courbe in zip(
+        x_values_list, y_values_list, noms_courbes
+    ):
+        df = pd.DataFrame(dict(x=x_values, y=y_values))
+        trace = go.Scatter(x=df["x"], y=df["y"], mode="lines", name=nom_courbe)
+        data.append(trace)
 
-    fig = px.line(df, x="x", y="y", title=titre, labels={"x": x_titre, "y": y_titre})
+    layout = go.Layout(
+        title=titre, xaxis=dict(title=x_titre), yaxis=dict(title=y_titre)
+    )
+    fig = go.Figure(data=data, layout=layout)
 
     graph_html = opy.plot(fig, auto_open=False, output_type="div")
 

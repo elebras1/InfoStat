@@ -21,7 +21,7 @@
                         {{form.source}}
                     </div>
                     <div class="form-group mt-2 w-1/2">
-                        <label class="block mb-2 text-sm font-medium text-gray-800">Source*</label>
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Période d'enquête*</label>
                         {{form.periode_enquete}}
                     </div>
                 </div>
@@ -50,17 +50,26 @@
                         {{form.y_titre}}
                     </div>
                 </div>
-                <div class="mt-2 flex space-x-3">
-                    <div class="form-group">
-                        <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de x</label>
-                        {{form.x_valeurs}}
-                    </div>
+                {{ formset.management_form }}
+                <div class="mt-2 flex flex-col" id="formset-div">
+                    {% for courbe_form in formset %}
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Titre de la de courbe</label>
+                            {{courbe_form.titre}}
+                        </div>
 
-                    <div class="form-group">
-                        <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de y</label>
-                        {{form.y_valeurs}}
-                    </div>
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de x</label>
+                            {{courbe_form.x_valeurs}}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de y</label>
+                            {{courbe_form.y_valeurs}}
+                        </div>
+                    {% endfor %}
                 </div>
+                <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" id="add-form">Ajouter une courbe</button>
                 <div class="mt-2">
                     {{ graph_html|safe }}
                 </div>
@@ -71,6 +80,47 @@
             </form>
         </div>
     </div>
+
+    <script>
+        const addButton = document.getElementById("add-form");
+        const formsetDiv = document.getElementById("formset-div");
+        const totalFormsInput = document.getElementById("id_form-TOTAL_FORMS");
+        let formNum = formsetDiv.children.length / 3;
+
+        addButton.addEventListener('click', addForm);
+
+        function addForm(e) {
+            e.preventDefault();
+
+            const newFormsetTitre = document.createElement("div");
+            newFormsetTitre.classList.add("form-group");
+            newFormsetTitre.innerHTML = `
+                <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Titre de la courbe</label>
+                <input type="text" name="form-${formNum}-titre" class="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full" maxlength="100" id="id_form-${formNum}-x_valeurs" value="">
+            `;
+
+            const newFormsetX = document.createElement("div");
+            newFormsetX.classList.add("form-group");
+            newFormsetX.innerHTML = `
+                <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de x</label>
+                <input type="text" name="form-${formNum}-x_valeurs" class="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full" maxlength="100" id="id_form-${formNum}-x_valeurs" value="">
+            `;
+
+            const newFormsetY = document.createElement("div");
+            newFormsetY.classList.add("form-group");
+            newFormsetY.innerHTML = `
+                <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de y</label>
+                <input type="text" name="form-${formNum}-y_valeurs" class="block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full" maxlength="100" id="id_form-${formNum}-y_valeurs" value="">
+            `;
+            formNum ++
+            
+            formsetDiv.appendChild(newFormsetTitre);
+            formsetDiv.appendChild(newFormsetX);
+            formsetDiv.appendChild(newFormsetY);
+
+            totalFormsInput.setAttribute("value", formNum);
+        };
+    </script>
+    
+
 {% endblock body %}
-
-

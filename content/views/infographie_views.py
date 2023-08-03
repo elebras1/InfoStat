@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import Http404
 from ..models import Infographie, Article, Infographie_favori
-from ..forms.infographie_form import InfographieForm
-from ..utils.graphique_utils import scatter
+from ..forms.infographie_form import InfographieForm, CourbeForm, CourbeFormSet
+from ..utils.graphique_utils import line
 
 
 def infographie(request, id):
@@ -57,34 +57,54 @@ def infographie(request, id):
 def infographie_new(request):
     user = request.user
     graph_html = None
+
     if request.method == "POST":
         form = InfographieForm(request.POST)
-        if form.is_valid():
+        formset = CourbeFormSet(request.POST, prefix="form")
+        if form.is_valid() and formset.is_valid():
+            x_valeurs_list = []
+            y_valeurs_list = []
+            noms_courbes = []
+
+            for form_data in formset.cleaned_data:
+                x_valeurs = form_data.get("x_valeurs")
+                y_valeurs = form_data.get("y_valeurs")
+                noms_courbes.append(form_data.get("titre"))
+
+                if x_valeurs and y_valeurs:
+                    x_valeurs = [float(valeur) for valeur in x_valeurs.split("/")]
+                    y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
+                    x_valeurs_list.append(x_valeurs)
+                    y_valeurs_list.append(y_valeurs)
+
             titre = form.cleaned_data["titre"]
             type_graphique = form.cleaned_data["type_graphique"]
             x_titre = form.cleaned_data["x_titre"]
             y_titre = form.cleaned_data["y_titre"]
-            x_valeurs = form.cleaned_data["x_valeurs"]
-            y_valeurs = form.cleaned_data["y_valeurs"]
+
             submit_type = request.POST.get("submit_type")
 
-            x_valeurs = list(x_valeurs.split("/"))
-            x_valeurs = [float(valeur) for valeur in x_valeurs]
-            y_valeurs = list(y_valeurs.split("/"))
-            y_valeurs = [float(valeur) for valeur in y_valeurs]
-
             if submit_type == "preview":
-                graph_html = scatter(x_valeurs, y_valeurs, titre, x_titre, y_titre)
+                graph_html = line(
+                    x_valeurs_list,
+                    y_valeurs_list,
+                    titre,
+                    x_titre,
+                    y_titre,
+                    noms_courbes,
+                )
 
             elif submit_type == "send":
-                print("send")
                 infographie = form.save(commit=False)
                 infographie.user = user
                 infographie.save()
                 return redirect(reverse("infographie", args=[infographie.id]))
     else:
         form = InfographieForm()
+        formset = CourbeFormSet(prefix="form")
 
     return render(
-        request, "infographie_new.html", {"form": form, "graph_html": graph_html}
+        request,
+        "infographie_new.html",
+        {"form": form, "graph_html": graph_html, "formset": formset},
     )
