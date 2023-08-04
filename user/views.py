@@ -87,6 +87,13 @@ def profil(request):
     except Http404:
         photo_profil = None
 
+    if user.is_superuser:
+        infographies_ajoute = Infographie.objects.filter(user=user)
+        articles_ajoute = Article.objects.filter(user=user)
+    else:
+        infographies_ajoute = None
+        articles_ajoute = None
+
     infographies = Infographie.objects.filter(infographie_favori__user=user).order_by(
         "-pub_date"
     )
@@ -104,12 +111,21 @@ def profil(request):
             Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
         )
 
+        infographies_ajoute = infographies_ajoute.filter(
+            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+        )
+        articles_ajoute = articles_ajoute.filter(
+            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+        )
+
     return render(
         request,
         "profil.html",
         {
             "articles": articles,
             "infographies": infographies,
+            "articles_ajoute": articles_ajoute,
+            "infographies_ajoute": infographies_ajoute,
             "user": user,
             "form": form,
             "photo_profil": photo_profil,

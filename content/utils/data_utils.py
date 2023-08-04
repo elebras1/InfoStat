@@ -154,21 +154,25 @@ def generate_article(num):
 
 def generate_favori():
     for ifg in infographies:
-        for _ in range(random.randint(0, 3)):
-            try:
-                user_idx = random.randint(0, len(users) - 1)
-                Infographie_favori.objects.get_or_create(
-                    infographie=ifg, user=users[user_idx]
-                )
-            except IntegrityError:
-                pass
+        favori_values = random.choices([0, 1], weights=[9, 1], k=random.randint(0, 3))
+        for value in favori_values:
+            if value == 1:
+                try:
+                    user_idx = random.randint(0, len(users) - 1)
+                    Infographie_favori.objects.get_or_create(
+                        infographie=ifg, user=users[user_idx]
+                    )
+                except IntegrityError:
+                    pass
 
     for article in articles:
-        for _ in range(random.randint(0, 3)):
-            try:
-                user_idx = random.randint(0, len(users) - 1)
-                Article_favori.objects.get_or_create(
-                    article=article, user=users[user_idx]
-                )
-            except IntegrityError:
-                pass
+        favori_values = random.choices([0, 1], weights=[9, 1], k=random.randint(0, 3))
+        for value in favori_values:
+            if value == 1:
+                try:
+                    user_idx = random.randint(0, len(users) - 1)
+                    Article_favori.objects.get_or_create(
+                        article=article, user=users[user_idx]
+                    )
+                except IntegrityError:
+                    pass

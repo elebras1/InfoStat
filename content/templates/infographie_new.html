@@ -72,7 +72,9 @@
                 <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" id="add-form">Ajouter une courbe</button>
                 <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" id="del-form">Supprimer une courbe</button>
                 <div class="mt-2">
-                    {{ graph_html|safe }}
+                    {% if graph_html != None %}
+                        {{ graph_html|safe }}
+                    {% endif %}
                 </div>
                 <div class="flex space-x-3">
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" name="submit_type" value="send">Envoyer</button>
