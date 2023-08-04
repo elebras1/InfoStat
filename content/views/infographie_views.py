@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import Http404
 from ..models import Infographie, Article, Infographie_favori
-from ..forms.infographie_form import InfographieForm, CourbeForm, CourbeFormSet
+from ..forms.infographie_form import InfographieForm
+from ..forms.chart_form import CourbeForm, CourbeFormSet
 from ..utils.graphique_utils import line
 
 
