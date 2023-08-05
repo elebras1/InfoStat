@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import Http404
 from ..models import Infographie, Article, Infographie_favori
 from ..forms.infographie_form import InfographieForm
-from ..forms.chart_form import CourbeForm, CourbeFormSet
-from ..utils.graphique_utils import line
+from ..forms.chart_form import LineFormSet, PieForm
+from ..utils.graphique_utils import line, pie
 
 
 def infographie(request, id):
@@ -61,39 +61,50 @@ def infographie_new(request):
 
     if request.method == "POST":
         form = InfographieForm(request.POST)
-        formset = CourbeFormSet(request.POST, prefix="form")
-        if form.is_valid() and formset.is_valid():
-            x_valeurs_list = []
-            y_valeurs_list = []
-            noms_courbes = []
-
-            for form_data in formset.cleaned_data:
-                x_valeurs = form_data.get("x_valeurs")
-                y_valeurs = form_data.get("y_valeurs")
-                noms_courbes.append(form_data.get("titre"))
-
-                if x_valeurs and y_valeurs:
-                    x_valeurs = [float(valeur) for valeur in x_valeurs.split("/")]
-                    y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
-                    x_valeurs_list.append(x_valeurs)
-                    y_valeurs_list.append(y_valeurs)
-
+        formset_line = LineFormSet(request.POST, prefix="form")
+        form_pie = PieForm(request.POST)
+        if form.is_valid():
             titre = form.cleaned_data["titre"]
             type_graphique = form.cleaned_data["type_graphique"]
             x_titre = form.cleaned_data["x_titre"]
             y_titre = form.cleaned_data["y_titre"]
 
+            if form_pie.is_valid():
+                valeurs_pie = form_pie.cleaned_data["valeurs"]
+                noms_pie = form_pie.cleaned_data["noms"]
+                valeurs_pie = [float(valeur) for valeur in valeurs_pie.split("/")]
+                noms_pie = [nom for nom in noms_pie.split("/")]
+
+            if formset_line.is_valid():
+                x_valeurs_list = []
+                y_valeurs_list = []
+                noms_courbes = []
+
+                for form_data in formset_line.cleaned_data:
+                    x_valeurs = form_data.get("x_valeurs")
+                    y_valeurs = form_data.get("y_valeurs")
+                    noms_courbes.append(form_data.get("titre"))
+
+                    if x_valeurs and y_valeurs:
+                        x_valeurs = [float(valeur) for valeur in x_valeurs.split("/")]
+                        y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
+                        x_valeurs_list.append(x_valeurs)
+                        y_valeurs_list.append(y_valeurs)
+
             submit_type = request.POST.get("submit_type")
 
             if submit_type == "preview":
-                graph_html = line(
-                    x_valeurs_list,
-                    y_valeurs_list,
-                    titre,
-                    x_titre,
-                    y_titre,
-                    noms_courbes,
-                )
+                if type_graphique == "line":
+                    graph_html = line(
+                        x_valeurs_list,
+                        y_valeurs_list,
+                        titre,
+                        x_titre,
+                        y_titre,
+                        noms_courbes,
+                    )
+                if type_graphique == "pie":
+                    graph_html = pie(valeurs_pie, noms_pie)
 
             elif submit_type == "send":
                 infographie = form.save(commit=False)
@@ -102,10 +113,16 @@ def infographie_new(request):
                 return redirect(reverse("infographie", args=[infographie.id]))
     else:
         form = InfographieForm()
-        formset = CourbeFormSet(prefix="form")
+        formset_line = LineFormSet(prefix="form")
+        form_pie = PieForm()
 
     return render(
         request,
         "infographie_new.html",
-        {"form": form, "graph_html": graph_html, "formset": formset},
+        {
+            "form": form,
+            "graph_html": graph_html,
+            "formset_line": formset_line,
+            "form_pie": form_pie,
+        },
     )

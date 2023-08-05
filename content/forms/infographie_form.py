@@ -17,6 +17,7 @@ class InfographieForm(forms.ModelForm):
     type_graphique = forms.ChoiceField(
         choices=(
             ("line", "Courbe"),
+            ("pie", "Secteurs"),
             ("scatter", "Nuage de points"),
             ("bar", "Barres"),
         )

@@ -50,27 +50,43 @@
                         {{form.y_titre}}
                     </div>
                 </div>
-                {{ formset.management_form }}
-                <div class="mt-8 flex flex-col rounded bg-gray-100 p-6" id="formset-div">
-                    {% for courbe_form in formset %}
+                {{ formset_line.management_form }}
+                <div class="mt-8 flex flex-col rounded bg-gray-100 p-6" id="formset-line-div">
+                    {% for form in formset_line %}
                         <div class="form-group">
                             <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Titre de la de courbe</label>
-                            {{courbe_form.titre}}
+                            {{form.titre}}
                         </div>
 
                         <div class="form-group">
                             <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de x</label>
-                            {{courbe_form.x_valeurs}}
+                            {{form.x_valeurs}}
                         </div>
 
                         <div class="form-group">
                             <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de y</label>
-                            {{courbe_form.y_valeurs}}
+                            {{form.y_valeurs}}
                         </div>
                     {% endfor %}
                 </div>
-                <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" id="add-form">Ajouter une courbe</button>
-                <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" id="del-form">Supprimer une courbe</button>
+                <div class="flex w-full space-x-3" id="formset-line-button">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="add-form">Ajouter une courbe</button>
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="del-form">Supprimer une courbe</button>
+                </div>
+                
+                {{form_pie.errors}}
+                <div class="mt-8 flex flex-col rounded bg-gray-100 p-6" id="form-pie-div">
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs</label>
+                        {{form_pie.valeurs}}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Nom</label>
+                        {{form_pie.noms}}
+                    </div>
+                </div>
+
                 <div class="mt-2">
                     {% if graph_html != None %}
                         {{ graph_html|safe }}

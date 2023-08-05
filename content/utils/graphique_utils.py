@@ -21,3 +21,12 @@ def line(x_values_list, y_values_list, titre, x_titre, y_titre, noms_courbes):
     graph_html = opy.plot(fig, auto_open=False, output_type="div")
 
     return graph_html
+
+
+def pie(values, names):
+    df = pd.DataFrame(dict(value=values, name=names))
+    fig = px.pie(df, values="value", names="name")
+
+    graph_html = opy.plot(fig, auto_open=False, output_type="div")
+
+    return graph_html

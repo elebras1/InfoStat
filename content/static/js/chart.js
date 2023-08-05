@@ -1,11 +1,30 @@
 const addButton = document.getElementById("add-form");
 const delButton = document.getElementById("del-form");
-const formsetDiv = document.getElementById("formset-div");
+const formsetLineDiv = document.getElementById("formset-line-div");
+const formsetLineButton = document.getElementById("formset-line-button");
+const formPieDiv = document.getElementById("form-pie-div");
+const typeGraphique = document.getElementById("id_type_graphique");
 const totalForms = document.getElementById("id_form-TOTAL_FORMS");
-let formNum = formsetDiv.children.length / 3;
+let formNum = formsetLineDiv.children.length / 3;
 
-addButton.addEventListener('click', addForm);
-delButton.addEventListener('click', delForm);
+
+function hiddenFormsetLine() {
+    if (typeGraphique.value !== "line") {
+        formsetLineDiv.style.display = "none";
+        formsetLineButton.style.display = "none";
+    } else {
+        formsetLineDiv.style.display = "block";
+        formsetLineButton.style.display = "block";
+    }
+}
+
+function hiddenFormPie() {
+    if (typeGraphique.value !== "pie") {
+        formPieDiv.style.display = "none";
+    } else {
+        formPieDiv.style.display = "block";
+    }
+}
 
 function addForm(e) {
     e.preventDefault();
@@ -32,9 +51,9 @@ function addForm(e) {
             `;
     formNum++
 
-    formsetDiv.appendChild(newFormsetTitre);
-    formsetDiv.appendChild(newFormsetX);
-    formsetDiv.appendChild(newFormsetY);
+    formsetLineDiv.appendChild(newFormsetTitre);
+    formsetLineDiv.appendChild(newFormsetX);
+    formsetLineDiv.appendChild(newFormsetY);
 
     totalForms.setAttribute("value", formNum);
 };
@@ -43,9 +62,15 @@ function delForm(e) {
     e.preventDefault();
     if (totalForms.value > 1) {
         for (let i = 0; i < 3; i++) {
-            formsetDiv.removeChild(formsetDiv.lastChild);
+            formsetLineDiv.removeChild(formsetLineDiv.lastChild);
         }
         formNum -= 1;
         totalForms.setAttribute("value", formNum);
     }
 }
+hiddenFormsetLine()
+hiddenFormPie()
+addButton.addEventListener('click', addForm);
+delButton.addEventListener('click', delForm);
+typeGraphique.addEventListener("change", hiddenFormsetLine);
+typeGraphique.addEventListener("change", hiddenFormPie);
