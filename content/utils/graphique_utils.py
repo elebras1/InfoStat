@@ -30,3 +30,12 @@ def pie(values, names):
     graph_html = opy.plot(fig, auto_open=False, output_type="div")
 
     return graph_html
+
+
+def scatter():
+    df = px.data.iris()  # iris is a pandas DataFrame
+    fig = px.scatter(df, x="sepal_width", y="sepal_length")
+
+    graph_html = opy.plot(fig, auto_open=False, output_type="div")
+
+    return graph_html
