@@ -80,8 +80,8 @@ def infographie_new(request):
                     noms_pie = [nom for nom in noms_pie.split("/")]
 
             if formset_line.is_valid():
-                x_valeurs_list = []
-                y_valeurs_list = []
+                x_valeurs_line = []
+                y_valeurs_line = []
                 noms_courbes = []
 
                 for form in formset_line.forms:
@@ -92,16 +92,32 @@ def infographie_new(request):
                     if x_valeurs and y_valeurs:
                         x_valeurs = [float(valeur) for valeur in x_valeurs.split("/")]
                         y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
-                        x_valeurs_list.append(x_valeurs)
-                        y_valeurs_list.append(y_valeurs)
+                        x_valeurs_line.append(x_valeurs)
+                        y_valeurs_line.append(y_valeurs)
+
+            if formset_scatter.is_valid():
+                x_valeurs_scatter = []
+                y_valeurs_scatter = []
+                noms_points = []
+
+                for form in formset_scatter.forms:
+                    x_valeurs = form.cleaned_data.get("x_valeurs")
+                    y_valeurs = form.cleaned_data.get("y_valeurs")
+                    noms_points.append(form.cleaned_data.get("titre"))
+
+                    if x_valeurs and y_valeurs:
+                        x_valeurs = [float(valeur) for valeur in x_valeurs.split("/")]
+                        y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
+                        x_valeurs_scatter.append(x_valeurs)
+                        y_valeurs_scatter.append(y_valeurs)
 
             submit_type = request.POST.get("submit_type")
 
             if submit_type == "preview":
                 if type_graphique == "line":
                     graph_html = line(
-                        x_valeurs_list,
-                        y_valeurs_list,
+                        x_valeurs_line,
+                        y_valeurs_line,
                         titre,
                         x_titre,
                         y_titre,
@@ -111,7 +127,14 @@ def infographie_new(request):
                     graph_html = pie(valeurs_pie, noms_pie)
 
                 elif type_graphique == "scatter":
-                    graph_html = scatter()
+                    graph_html = scatter(
+                        x_valeurs_scatter,
+                        y_valeurs_scatter,
+                        titre,
+                        x_titre,
+                        y_titre,
+                        noms_points,
+                    )
 
                 form = InfographieForm(request.POST)
 

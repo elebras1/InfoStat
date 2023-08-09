@@ -32,9 +32,16 @@ def pie(values, names):
     return graph_html
 
 
-def scatter():
-    df = px.data.iris()  # iris is a pandas DataFrame
-    fig = px.scatter(df, x="sepal_width", y="sepal_length")
+def scatter(x_values_list, y_values_list, titre, x_titre, y_titre, nom_points):
+    fig = go.Figure()
+
+    for x_values, y_values, nom_point in zip(x_values_list, y_values_list, nom_points):
+        scatter_trace = go.Scatter(
+            x=x_values, y=y_values, mode="markers", name=nom_point
+        )
+        fig.add_trace(scatter_trace)
+
+    fig.update_layout(title=titre, xaxis_title=x_titre, yaxis_title=y_titre)
 
     graph_html = opy.plot(fig, auto_open=False, output_type="div")
 
