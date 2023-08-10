@@ -46,3 +46,16 @@ def scatter(x_values_list, y_values_list, titre, x_titre, y_titre, nom_points):
     graph_html = opy.plot(fig, auto_open=False, output_type="div")
 
     return graph_html
+
+
+def bar(valeurs, titres, noms, titre, x_titre, y_titre):
+    df = pd.DataFrame(valeurs, columns=noms, index=titres)
+    print(y_titre)
+
+    fig = px.bar(
+        df, x=titres, y=noms, title=titre, labels={"x": x_titre, "value": y_titre}
+    )
+
+    graph_html = opy.plot(fig, auto_open=False, output_type="div")
+
+    return graph_html

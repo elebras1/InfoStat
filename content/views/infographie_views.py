@@ -2,8 +2,14 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import Http404
 from ..models import Infographie, Article, Infographie_favori
 from ..forms.infographie_form import InfographieForm
-from ..forms.chart_form import LineFormSet, ScatterFormSet, PieForm
-from ..utils.graphique_utils import line, pie, scatter
+from ..forms.chart_form import (
+    LineFormSet,
+    ScatterFormSet,
+    BarFormSet,
+    PieForm,
+    BarNomsForm,
+)
+from ..utils.graphique_utils import line, pie, scatter, bar
 
 
 def infographie(request, id):
@@ -63,7 +69,9 @@ def infographie_new(request):
         form = InfographieForm(request.POST)
         formset_line = LineFormSet(request.POST, prefix="form_line")
         formset_scatter = ScatterFormSet(request.POST, prefix="form_scatter")
+        formset_bar = BarFormSet(request.POST, prefix="form_bar")
         form_pie = PieForm(request.POST)
+        form_barnoms = BarNomsForm(request.POST)
 
         if form.is_valid():
             titre = form.cleaned_data["titre"]
@@ -73,11 +81,11 @@ def infographie_new(request):
 
             if form_pie.is_valid():
                 valeurs_pie = form_pie.cleaned_data["valeurs"]
-                noms_pie = form_pie.cleaned_data["noms"]
+                noms_pie = form_pie.cleaned_data["noms_pie"]
 
                 if valeurs_pie is not "" and noms_pie is not "":
                     valeurs_pie = [float(valeur) for valeur in valeurs_pie.split("/")]
-                    noms_pie = [nom for nom in noms_pie.split("/")]
+                    noms_pie = noms_pie.split("/")
 
             if formset_line.is_valid():
                 x_valeurs_line = []
@@ -111,6 +119,23 @@ def infographie_new(request):
                         x_valeurs_scatter.append(x_valeurs)
                         y_valeurs_scatter.append(y_valeurs)
 
+            if formset_bar.is_valid() and form_barnoms.is_valid():
+                noms_bar = form_barnoms.cleaned_data["noms"]
+                valeurs_bar = []
+                titres_bar = []
+
+                if len(noms_bar) != 0:
+                    noms_bar = noms_bar.split("/")
+
+                for form in formset_bar.forms:
+                    valeurs = form.cleaned_data.get("valeurs")
+                    titre_bar = form.cleaned_data.get("titre")
+
+                    if valeurs:
+                        valeurs = [float(valeur) for valeur in valeurs.split("/")]
+                        valeurs_bar.append(valeurs)
+                        titres_bar.append(titre_bar)
+
             submit_type = request.POST.get("submit_type")
 
             if submit_type == "preview":
@@ -136,6 +161,12 @@ def infographie_new(request):
                         noms_points,
                     )
 
+                elif type_graphique == "bar":
+                    print(titre)
+                    graph_html = bar(
+                        valeurs_bar, titres_bar, noms_bar, titre, x_titre, y_titre
+                    )
+
                 form = InfographieForm(request.POST)
 
             elif submit_type == "send":
@@ -147,7 +178,9 @@ def infographie_new(request):
         form = InfographieForm()
         formset_line = LineFormSet(prefix="form_line")
         formset_scatter = ScatterFormSet(prefix="form_scatter")
+        formset_bar = BarFormSet(prefix="form_bar")
         form_pie = PieForm()
+        form_barnoms = BarNomsForm()
 
     return render(
         request,
@@ -158,5 +191,7 @@ def infographie_new(request):
             "formset_line": formset_line,
             "form_pie": form_pie,
             "formset_scatter": formset_scatter,
+            "formset_bar": formset_bar,
+            "form_barnoms": form_barnoms,
         },
     )
