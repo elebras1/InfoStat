@@ -66,18 +66,18 @@ def infographie_new(request):
     graph_html = None
 
     if request.method == "POST":
-        form = InfographieForm(request.POST)
+        form_info = InfographieForm(request.POST)
         formset_line = LineFormSet(request.POST, prefix="form_line")
         formset_scatter = ScatterFormSet(request.POST, prefix="form_scatter")
         formset_bar = BarFormSet(request.POST, prefix="form_bar")
         form_pie = PieForm(request.POST)
         form_barnoms = BarNomsForm(request.POST)
 
-        if form.is_valid():
-            titre = form.cleaned_data["titre"]
-            type_graphique = form.cleaned_data["type_graphique"]
-            x_titre = form.cleaned_data["x_titre"]
-            y_titre = form.cleaned_data["y_titre"]
+        if form_info.is_valid():
+            titre = form_info.cleaned_data["titre"]
+            type_graphique = form_info.cleaned_data["type_graphique"]
+            x_titre = form_info.cleaned_data["x_titre"]
+            y_titre = form_info.cleaned_data["y_titre"]
 
             if form_pie.is_valid():
                 valeurs_pie = form_pie.cleaned_data["valeurs"]
@@ -147,9 +147,10 @@ def infographie_new(request):
                         x_titre,
                         y_titre,
                         noms_courbes,
+                        "preview",
                     )
                 elif type_graphique == "pie":
-                    graph_html = pie(valeurs_pie, noms_pie)
+                    graph_html = pie(valeurs_pie, noms_pie, titre, "preview")
 
                 elif type_graphique == "scatter":
                     graph_html = scatter(
@@ -159,23 +160,66 @@ def infographie_new(request):
                         x_titre,
                         y_titre,
                         noms_points,
+                        "preview",
                     )
 
                 elif type_graphique == "bar":
                     print(titre)
                     graph_html = bar(
-                        valeurs_bar, titres_bar, noms_bar, titre, x_titre, y_titre
+                        valeurs_bar,
+                        titres_bar,
+                        noms_bar,
+                        titre,
+                        x_titre,
+                        y_titre,
+                        "preview",
                     )
 
-                form = InfographieForm(request.POST)
+                form_info = InfographieForm(request.POST)
 
             elif submit_type == "send":
-                infographie = form.save(commit=False)
+                if type_graphique == "line":
+                    filename = line(
+                        x_valeurs_line,
+                        y_valeurs_line,
+                        titre,
+                        x_titre,
+                        y_titre,
+                        noms_courbes,
+                        "save",
+                    )
+                elif type_graphique == "pie":
+                    filename = pie(valeurs_pie, noms_pie, titre, "save")
+
+                elif type_graphique == "scatter":
+                    filename = scatter(
+                        x_valeurs_scatter,
+                        y_valeurs_scatter,
+                        titre,
+                        x_titre,
+                        y_titre,
+                        noms_points,
+                        "save",
+                    )
+
+                elif type_graphique == "bar":
+                    filename = bar(
+                        valeurs_bar,
+                        titres_bar,
+                        noms_bar,
+                        titre,
+                        x_titre,
+                        y_titre,
+                        "save",
+                    )
+
+                infographie = form_info.save(commit=False)
+                infographie.graphique = filename
                 infographie.user = user
                 infographie.save()
                 return redirect(reverse("infographie", args=[infographie.id]))
     else:
-        form = InfographieForm()
+        form_info = InfographieForm()
         formset_line = LineFormSet(prefix="form_line")
         formset_scatter = ScatterFormSet(prefix="form_scatter")
         formset_bar = BarFormSet(prefix="form_bar")
@@ -186,7 +230,7 @@ def infographie_new(request):
         request,
         "infographie_new.html",
         {
-            "form": form,
+            "form": form_info,
             "graph_html": graph_html,
             "formset_line": formset_line,
             "form_pie": form_pie,

@@ -111,7 +111,7 @@
                 {% for infographie in infographie_selection%}
                     <div class="shadow-custom rounded p-3 w-full">
                         <div class="flex">
-                            <img src={% static infographie.graphique %} class="h-16">
+                            <img src={{ MEDIA_URL }}{{ infographie.graphique }} class="h-16">
                             <div class="flex flex-col ml-3">
                                 <span class="font-medium text-gray-600">{{infographie.theme}}</span>
                                 <a href="{% url 'infographie' infographie.id %}" class="text-gray-600 hover:text-blue-600">{{infographie.titre}}</a>

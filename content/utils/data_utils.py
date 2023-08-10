@@ -123,7 +123,7 @@ def generate_infographie(num):
         infographie = Infographie.objects.create(
             titre=fake.sentence(),
             description=fake.text(max_nb_chars=2500),
-            graphique="default_graphique.svg",
+            graphique="graphique/default_graphique.svg",
             source="https://www.cairn.fr",
             periode_enquete="2018 - 2022",
             compteur=random.randint(0, 3000),

@@ -41,7 +41,7 @@
                     {% for infographie in infographies %}
                         <div class="hidden duration-700 ease-in-out flex rounded text-lg p-3" data-carousel-item>
                             <div class="w-1/2">
-                                <img src="{% static infographie.graphique %}">
+                                <img src="{{ MEDIA_URL }}{{ infographie.graphique }}">
                             </div>
                             <div class="w-1/2">
                                 <div class="">
