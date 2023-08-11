@@ -15,6 +15,10 @@
                             <a href="#discussion" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Rapports</a>
                             <a href="#" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Daily Data</a>
                             <a href="{% url 'recherche' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Rechercher</a>
+                            {% if user.is_superuser == 1 %}
+                                <a href="{% url 'infographie_new' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Ajouter une infographie</a>
+                                <a href="{% url 'article_new' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Ajouter un article</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
