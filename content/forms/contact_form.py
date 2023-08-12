@@ -37,3 +37,41 @@ class ContactForm(forms.Form):
             }
         ),
     )
+
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+        if len(name) > 80:
+            raise forms.ValidationError("Le nom ne peut pas dépasser 80 caractères.")
+        elif len(name) < 12:
+            raise forms.ValidationError(
+                "Le nom doit contenir au minimum 12 caractères."
+            )
+        return name
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if len(email) > 100:
+            raise forms.ValidationError("L'email ne peut pas dépasser 100 caractères.")
+        return email
+
+    def clean_sujet(self):
+        sujet = self.cleaned_data.get("sujet")
+        if len(sujet) > 100:
+            raise forms.ValidationError("Le sujet ne peut pas dépasser 100 caractères.")
+        elif len(sujet) < 10:
+            raise forms.ValidationError(
+                "Le sujet doit contenir au minimum 10 caractères."
+            )
+        return sujet
+
+    def clean_message(self):
+        message = self.cleaned_data.get("message")
+        if len(message) > 100:
+            raise forms.ValidationError(
+                "Le message ne peut pas dépasser 2000 caractères."
+            )
+        elif len(message) < 10:
+            raise forms.ValidationError(
+                "Le message doit contenir au minimum 10 caractères."
+            )
+        return message
