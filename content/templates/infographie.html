@@ -14,7 +14,7 @@
                     {{infographie.titre}}
                 </h1>
                 {% if user.is_superuser == 1 %}
-                    <a href="">
+                    <a href="{% url 'infographie_edit' infographie.id %}">
                         <img src="{% static 'edit_icon.png' %}" class="h-6"/>
                     </a>
                 {% endif %}

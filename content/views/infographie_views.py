@@ -73,6 +73,8 @@ def infographie_new(request):
         form_pie = PieForm(request.POST)
         form_barnoms = BarNomsForm(request.POST)
 
+        errors = {"pie": 0, "line": 0, "scatter": 0, "bar": 0}
+
         if form_info.is_valid():
             titre = form_info.cleaned_data["titre"]
             type_graphique = form_info.cleaned_data["type_graphique"]
@@ -86,6 +88,9 @@ def infographie_new(request):
                 if valeurs_pie is not "" and noms_pie is not "":
                     valeurs_pie = [float(valeur) for valeur in valeurs_pie.split("/")]
                     noms_pie = noms_pie.split("/")
+
+                    if len(noms_pie) != len(valeurs_pie):
+                        errors["pie"] += 1
 
             if formset_line.is_valid():
                 x_valeurs_line = []
@@ -103,6 +108,9 @@ def infographie_new(request):
                         x_valeurs_line.append(x_valeurs)
                         y_valeurs_line.append(y_valeurs)
 
+                        if len(x_valeurs) != len(y_valeurs):
+                            errors["line"] += 1
+
             if formset_scatter.is_valid():
                 x_valeurs_scatter = []
                 y_valeurs_scatter = []
@@ -118,6 +126,10 @@ def infographie_new(request):
                         y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
                         x_valeurs_scatter.append(x_valeurs)
                         y_valeurs_scatter.append(y_valeurs)
+
+                        if len(x_valeurs) != len(y_valeurs):
+                            errors["scatter"] += 1
+                            print(errors["scatter"])
 
             if formset_bar.is_valid() and form_barnoms.is_valid():
                 noms_bar = form_barnoms.cleaned_data["noms"]
@@ -136,10 +148,13 @@ def infographie_new(request):
                         valeurs_bar.append(valeurs)
                         titres_bar.append(titre_bar)
 
+                        if len(valeurs) != len(noms_bar):
+                            errors["bar"] += 1
+
             submit_type = request.POST.get("submit_type")
 
             if submit_type == "preview":
-                if type_graphique == "line":
+                if type_graphique == "line" and errors["line"] == 0:
                     graph_html = line(
                         x_valeurs_line,
                         y_valeurs_line,
@@ -149,10 +164,10 @@ def infographie_new(request):
                         noms_courbes,
                         "preview",
                     )
-                elif type_graphique == "pie":
+                elif type_graphique == "pie" and errors["pie"] == 0:
                     graph_html = pie(valeurs_pie, noms_pie, titre, "preview")
 
-                elif type_graphique == "scatter":
+                elif type_graphique == "scatter" and errors["scatter"] == 0:
                     graph_html = scatter(
                         x_valeurs_scatter,
                         y_valeurs_scatter,
@@ -163,8 +178,7 @@ def infographie_new(request):
                         "preview",
                     )
 
-                elif type_graphique == "bar":
-                    print(titre)
+                elif type_graphique == "bar" and errors["bar"] == 0:
                     graph_html = bar(
                         valeurs_bar,
                         titres_bar,
@@ -178,7 +192,7 @@ def infographie_new(request):
                 form_info = InfographieForm(request.POST)
 
             elif submit_type == "send":
-                if type_graphique == "line":
+                if type_graphique == "line" and errors["line"] == 0:
                     filename = line(
                         x_valeurs_line,
                         y_valeurs_line,
@@ -188,10 +202,10 @@ def infographie_new(request):
                         noms_courbes,
                         "save",
                     )
-                elif type_graphique == "pie":
+                elif type_graphique == "pie" and errors["pie"] == 0:
                     filename = pie(valeurs_pie, noms_pie, titre, "save")
 
-                elif type_graphique == "scatter":
+                elif type_graphique == "scatter" and errors["scatter"] == 0:
                     filename = scatter(
                         x_valeurs_scatter,
                         y_valeurs_scatter,
@@ -202,7 +216,7 @@ def infographie_new(request):
                         "save",
                     )
 
-                elif type_graphique == "bar":
+                elif type_graphique == "bar" and errors["bar"] == 0:
                     filename = bar(
                         valeurs_bar,
                         titres_bar,
@@ -239,3 +253,18 @@ def infographie_new(request):
             "form_barnoms": form_barnoms,
         },
     )
+
+
+def infographie_edit(request, id):
+    infographie = get_object_or_404(Infographie, id=id)
+    user = request.user
+
+    if request.method == "POST":
+        form = InfographieForm(request.POST, instance=infographie)
+        if form.is_valid():
+            infographie = form.save(commit=False)
+            infographie.save()
+            return redirect(reverse("infographie", args=[infographie.id]))
+    else:
+        form = InfographieForm(instance=infographie)
+    return render(request, "infographie_edit.html", {"form": form})

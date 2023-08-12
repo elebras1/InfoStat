@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="flex flex-col items-center">
+        <div class="max-w-5xl w-full py-14">
+            <span class="text-2xl font-light">Modifier une infographie</span>
+            <form method="post" class="mt-6">
+                {% csrf_token %}
+                {{form.errors}}
+                <div class="form-group">
+                    <label class="block mb-2 text-sm font-medium text-gray-800">Titre*</label>
+                    {{form.titre}}
+                </div>
+                <div class="form-group mt-2">
+                    <label class="block mb-2 text-sm font-medium text-gray-800">Description*</label>
+                    {{form.description}}
+                </div>
+                <div class="flex mt-2 justify-between space-x-3">
+                    <div class="form-group mt-2 w-1/2">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Source*</label>
+                        {{form.source}}
+                    </div>
+                    <div class="form-group mt-2 w-1/2">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Période d'enquête*</label>
+                        {{form.periode_enquete}}
+                    </div>
+                </div>
+                <div class="flex mt-2 justify-between">
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Thème*</label>
+                        {{form.theme}}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Région*</label>
+                        {{form.region}}
+                    </div>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" name="submit_type" value="send">Modifier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock body %}
