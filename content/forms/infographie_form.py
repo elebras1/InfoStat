@@ -57,3 +57,73 @@ class InfographieForm(forms.ModelForm):
         self.fields["theme"].widget.attrs["class"] = self.fields_class_select
         self.fields["region"].widget.attrs["class"] = self.fields_class_select
         self.fields["type_graphique"].widget.attrs["class"] = self.fields_class_select
+
+    def clean_titre(self):
+        titre = self.cleaned_data.get("titre")
+        if len(titre) > 80:
+            raise forms.ValidationError("Le titre ne peut pas dépasser 80 caractères.")
+        elif len(titre) < 5:
+            raise forms.ValidationError(
+                "Le titre doit contenir au minimum 5 caractères."
+            )
+        return titre
+
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if len(description) > 3000:
+            raise forms.ValidationError(
+                "La description ne peut pas dépasser 3000 caractères."
+            )
+        elif len(description) < 5:
+            raise forms.ValidationError(
+                "La description doit contenir au minimum 5 caractères."
+            )
+        return description
+
+    def clean_source(self):
+        source = self.cleaned_data.get("source")
+        if len(source) > 3000:
+            raise forms.ValidationError(
+                "La source ne peut pas dépasser 120 caractères."
+            )
+        elif len(source) < 5:
+            raise forms.ValidationError(
+                "La source doit contenir au minimum 5 caractères."
+            )
+        return source
+
+    def clean_periode_enquete(self):
+        periode_enquete = self.cleaned_data.get("periode_enquete")
+        if len(periode_enquete) > 12:
+            raise forms.ValidationError(
+                "La période d'enquête ne peut pas dépasser 12 caractères."
+            )
+        elif len(periode_enquete) < 1:
+            raise forms.ValidationError(
+                "La période d'enquête doit contenir au minimum 1 caractère."
+            )
+        return periode_enquete
+
+    def clean_x_titre(self):
+        x_titre = self.cleaned_data.get("x_titre")
+        if len(x_titre) > 40:
+            raise forms.ValidationError(
+                "La titre de l'axe des abscisses d'enquête ne peut pas dépasser 40 caractères."
+            )
+        elif len(x_titre) < 1:
+            raise forms.ValidationError(
+                "La titre de l'axe des abscisses doit contenir au minimum 1 caractère."
+            )
+        return x_titre
+
+    def clean_y_titre(self):
+        y_titre = self.cleaned_data.get("y_titre")
+        if len(y_titre) > 40:
+            raise forms.ValidationError(
+                "La titre de l'axe des ordonnées d'enquête ne peut pas dépasser 40 caractères."
+            )
+        elif len(y_titre) < 1:
+            raise forms.ValidationError(
+                "La titre de l'axe des ordonnées doit contenir au minimum 1 caractère."
+            )
+        return y_titre
