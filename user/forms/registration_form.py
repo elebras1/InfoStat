@@ -61,3 +61,35 @@ class RegistrationForm(forms.Form):
             }
         ),
     )
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if len(username) > 20:
+            raise forms.ValidationError("Le pseudo ne peut pas dépasser 20 caractères.")
+        elif len(username) < 2:
+            raise forms.ValidationError(
+                "Le pseudo doit contenir au minimum 2 caractères."
+            )
+        return username
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get("last_name")
+        if len(last_name) > 60:
+            raise forms.ValidationError(
+                "Le nom de famille ne peut pas dépasser 60 caractères."
+            )
+        elif len(last_name) < 2:
+            raise forms.ValidationError(
+                "Le nom de famille doit contenir au minimum 2 caractères."
+            )
+        return last_name
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get("first_name")
+        if len(first_name) > 60:
+            raise forms.ValidationError("Le prénom ne peut pas dépasser 60 caractères.")
+        elif len(first_name) < 2:
+            raise forms.ValidationError(
+                "Le prénom doit contenir au minimum 2 caractères."
+            )
+        return first_name
