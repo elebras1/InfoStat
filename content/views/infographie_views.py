@@ -85,9 +85,15 @@ def infographie_new(request):
                 valeurs_pie = form_pie.cleaned_data["valeurs"]
                 noms_pie = form_pie.cleaned_data["noms_pie"]
 
-                if valeurs_pie is not "" and noms_pie is not "":
+                validation = validation_digit(valeurs_pie)
+                if validation == False:
+                    errors["pie"] += 1
+
+                if valeurs_pie is not "" and noms_pie is not "" and errors["pie"] == 0:
                     valeurs_pie = [float(valeur) for valeur in valeurs_pie.split("/")]
                     noms_pie = noms_pie.split("/")
+                else:
+                    errors["pie"] += 1
 
                     if len(noms_pie) != len(valeurs_pie):
                         errors["pie"] += 1
@@ -102,7 +108,15 @@ def infographie_new(request):
                     y_valeurs = form.cleaned_data.get("y_valeurs")
                     noms_courbes.append(form.cleaned_data.get("titre"))
 
-                    if x_valeurs and y_valeurs:
+                    validation = validation_digit(x_valeurs)
+                    if validation == False:
+                        errors["line"] += 1
+
+                    validation = validation_digit(y_valeurs)
+                    if validation == False:
+                        errors["line"] += 1
+
+                    if x_valeurs and y_valeurs and errors["line"] == 0:
                         x_valeurs = [float(valeur) for valeur in x_valeurs.split("/")]
                         y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
                         x_valeurs_line.append(x_valeurs)
@@ -110,6 +124,8 @@ def infographie_new(request):
 
                         if len(x_valeurs) != len(y_valeurs):
                             errors["line"] += 1
+            else:
+                errors["line"] += 1
 
             if formset_scatter.is_valid():
                 x_valeurs_scatter = []
@@ -121,7 +137,16 @@ def infographie_new(request):
                     y_valeurs = form.cleaned_data.get("y_valeurs")
                     noms_points.append(form.cleaned_data.get("titre"))
 
-                    if x_valeurs and y_valeurs:
+                    validation = validation_digit(x_valeurs)
+
+                    if validation == False:
+                        errors["scatter"] += 1
+
+                    validation = validation_digit(y_valeurs)
+                    if validation == False:
+                        errors["scatter"] += 1
+
+                    if x_valeurs and y_valeurs and errors["scatter"] == 0:
                         x_valeurs = [float(valeur) for valeur in x_valeurs.split("/")]
                         y_valeurs = [float(valeur) for valeur in y_valeurs.split("/")]
                         x_valeurs_scatter.append(x_valeurs)
@@ -129,7 +154,8 @@ def infographie_new(request):
 
                         if len(x_valeurs) != len(y_valeurs):
                             errors["scatter"] += 1
-                            print(errors["scatter"])
+            else:
+                errors["scatter"] += 1
 
             if formset_bar.is_valid() and form_barnoms.is_valid():
                 noms_bar = form_barnoms.cleaned_data["noms"]
@@ -138,6 +164,9 @@ def infographie_new(request):
 
                 if len(noms_bar) != 0:
                     noms_bar = noms_bar.split("/")
+
+                else:
+                    errors["bar"] += 1
 
                 for form in formset_bar.forms:
                     valeurs = form.cleaned_data.get("valeurs")
@@ -150,6 +179,8 @@ def infographie_new(request):
 
                         if len(valeurs) != len(noms_bar):
                             errors["bar"] += 1
+            else:
+                errors["bar"] += 1
 
             submit_type = request.POST.get("submit_type")
 
@@ -268,3 +299,13 @@ def infographie_edit(request, id):
     else:
         form = InfographieForm(instance=infographie)
     return render(request, "infographie_edit.html", {"form": form})
+
+
+def validation_digit(liste):
+    if liste:
+        liste = liste.split("/")
+        for value in liste:
+            if not value.isdigit():
+                return False
+        return True
+    return False

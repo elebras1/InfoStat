@@ -15,9 +15,11 @@ const totalFormsScatter = document.getElementById("id_form_scatter-TOTAL_FORMS")
 const totalFormsBar = document.getElementById("id_form_bar-TOTAL_FORMS");
 const formsetBarDiv = document.getElementById("formset-bar-div");
 const formsetBarButton = document.getElementById("formset-bar-button");
-let formNumLine = formsetLineDiv.children.length / 4;
-let formNumScatter = formsetScatterDiv.children.length / 4;
-let formNumBar = formsetScatterDiv.children.length / 4;
+let formNumLine = parseFloat(totalFormsLine.value) || 1;
+let formNumScatter = parseFloat(totalFormsScatter.value) || 1;
+let formNumBar = parseFloat(totalFormsBar.value) || 1;
+
+
 
 
 function hiddenFormsetLine() {
