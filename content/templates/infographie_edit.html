@@ -46,11 +46,138 @@
                         <label class="block mb-2 text-sm font-medium text-gray-800">Région*</label>
                         {{form.region}}
                     </div>
+
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Type de Graphique</label>
+                        {{form.type_graphique}}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Titre de l'axe des abscisses</label>
+                        {{form.x_titre}}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800">Titre de l'axe ordonnées</label>
+                        {{form.y_titre}}
+                    </div>
+                </div>
+                {{ formset_line.management_form }}
+                <div class="mt-8 flex flex-col rounded bg-gray-100 p-6" id="formset-line-div">
+                    <div class="flex items-center bg-blue-600 text-white text-sm font-bold px-4 py-3 rounded" role="alert">
+                        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+                        <p>Le format des valeurs prévues est : 2001/2002/2003/2004 et les valeurs de x et y doivent avoir le même nombre de valeurs.</p>
+                    </div>
+                    {% for form in formset_line %}
+                        <div class="form-group">
+                            <label class="block mb-2 mt-8 text-sm font-medium text-gray-800 w-1/2">Titre de la de courbe</label>
+                            {{form.titre}}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de x</label>
+                            {{form.x_valeurs}}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de y</label>
+                            {{form.y_valeurs}}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="flex w-full space-x-3" id="formset-line-button">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="add-form-line">Ajouter une courbe</button>
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="del-form-line">Supprimer une courbe</button>
+                </div>
+                
+                {{form_pie.errors}}
+                <div class="mt-8 flex flex-col rounded bg-gray-100 p-6" id="form-pie-div">
+                    <div class="flex items-center bg-blue-600 text-white text-sm font-bold px-4 py-3 rounded" role="alert">
+                        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+                        <p>Le format des valeurs prévues est : 110/40/130 et le format des noms associés sont Inde/France/Chine. Chaque valeur doit être associée à un nom.</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2 mt-8 text-sm font-medium text-gray-800 w-1/2">Valeurs</label>
+                        {{form_pie.valeurs}}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Noms</label>
+                        {{form_pie.noms_pie}}
+                    </div>
+                </div>
+
+                {{ formset_scatter.management_form }}
+                <div class="mt-8 flex flex-col rounded bg-gray-100 p-6" id="formset-scatter-div">
+                    <div class="flex items-center bg-blue-600 text-white text-sm font-bold px-4 py-3 rounded" role="alert">
+                        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+                        <p>Le format des valeurs prévues est : 2001/2002/2003/2004 et les valeurs de x et y doivent avoir le même nombre de valeurs.</p>
+                    </div>
+                    {% for form in formset_scatter %}
+                        <div class="form-group">
+                            <label class="block mb-2 mt-8 text-sm font-medium text-gray-800 w-1/2">Titre du nuage de points</label>
+                            {{form.titre}}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de x</label>
+                            {{form.x_valeurs}}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs de y</label>
+                            {{form.y_valeurs}}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="flex w-full space-x-3" id="formset-scatter-button">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="add-form-scatter">Ajouter un nuage de points</button>
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="del-form-scatter">Supprimer un nuage de points</button>
+                </div>
+
+                {{ formset_bar.management_form }}
+                <div class="mt-8 flex flex-col rounded bg-gray-100 p-6" id="formset-bar-div">
+                    <div class="flex items-center bg-blue-600 text-white text-sm font-bold px-4 py-3 rounded" role="alert">
+                        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+                        <p>Noms associés aux valeurs attend comme format : Or/Argent/Bronze et valeurs attend le format 10/31/5. Le nombres total de valeurs doit équivalent au nombres de noms.</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2 mt-8 text-sm font-medium text-gray-800 w-1/2">Noms associés aux valeurs</label>
+                        {{form_barnoms.noms}}
+                    </div>
+                    {% for form in formset_bar %}
+                        <div class="form-group">
+                            <label class="block mb-2 mt-8 text-sm font-medium text-gray-800 w-1/2">Nom de la colonne</label>
+                            {{form.titre}}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="block mb-2 text-sm font-medium text-gray-800 w-1/2">Valeurs</label>
+                            {{form.valeurs}}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="flex w-full space-x-3" id="formset-bar-button">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="add-form-bar">Ajouter une colonne</button>
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" id="del-form-bar">Supprimer une colonne</button>
+                </div>
+
+                <div class="mt-2">
+                    {% if graph_html != None %}
+                        {{ graph_html|safe }}
+                    {% endif %}
                 </div>
                 <div class="flex space-x-3">
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" name="submit_type" value="send">Modifier</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mt-5" name="submit_type" value="preview">Previsualiser</button>
                 </div>
             </form>
         </div>
     </div>
 {% endblock body %}
+
+{% block javascript %}
+    {{ block.super}}
+    <script src="{% static 'js/chart.js' %}"></script>
+{% endblock javascript %}
+

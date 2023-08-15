@@ -127,3 +127,49 @@ class InfographieForm(forms.ModelForm):
                 "La titre de l'axe des ordonnées doit contenir au minimum 1 caractère."
             )
         return y_titre
+
+
+class InfographieEditForm(InfographieForm):
+    type_graphique = forms.ChoiceField(
+        required=False,
+        choices=(
+            ("", "-------"),
+            ("line", "Courbe"),
+            ("pie", "Secteurs"),
+            ("scatter", "Nuage de points"),
+            ("bar", "Barres"),
+        ),
+    )
+
+    x_titre = forms.CharField(
+        required=False,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                "class": "block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full",
+                "value": "x",
+            }
+        ),
+    )
+
+    y_titre = forms.CharField(
+        required=False,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                "class": "block w-full rounded border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full",
+                "value": "y",
+            }
+        ),
+    )
+
+    class Meta:
+        model = Infographie
+        fields = [
+            "titre",
+            "description",
+            "source",
+            "theme",
+            "region",
+            "periode_enquete",
+        ]
