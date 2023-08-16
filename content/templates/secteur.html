@@ -15,7 +15,7 @@
                         <span class="text-4xl font-light">{{secteur.nom}}</span>
                         <span class="font-medium text-gray-600 mt-3">Informations et statistiques sur {{secteur.nom}}</span>
                         <div class="mt-3">
-                            <img src="{% static secteur.illustration %}" class="h-12 float-left mr-3">
+                            <img src="{{ MEDIA_URL }}{{ secteur.illustration }}" class="h-12 float-left mr-3">
                             <span class="text-gray-500 description truncated" id="description">{{secteur.description}}</span>
                             <button id="toggle-btn" class="text-blue-500 hover:underline">Afficher plus</button>
                             <button id="hide-btn" class="hidden text-blue-500 hover:underline">Masquer</button>

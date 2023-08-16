@@ -3,6 +3,7 @@ from django.http import Http404
 from ..models import Secteur, Infographie, Article
 from datetime import datetime, timedelta
 from ..forms.rechercheForm import RechercheForm
+from ..forms.secteur_form import SecteurForm
 from django.db.models import Q
 from django.urls import reverse
 
@@ -56,3 +57,17 @@ def secteur(request, id):
             "form": form,
         },
     )
+
+
+def secteur_new(request):
+    if request.method == "POST":
+        form = SecteurForm(request.POST, request.FILES)
+        if form.is_valid():
+            illustration = request.FILES.get("illustration")
+            secteur = form.save(commit=False)
+            secteur.illustration = illustration
+            secteur.save()
+            return redirect(reverse("secteur", args=[secteur.id]))
+    else:
+        form = SecteurForm()
+    return render(request, "secteur_new.html", {"form": form})

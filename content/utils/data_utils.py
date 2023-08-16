@@ -34,7 +34,7 @@ def generate_secteurs(num):
         secteur = Secteur.objects.create(
             nom=fake.word(),
             description=fake.text(max_nb_chars=2500),
-            illustration="flag.png",
+            illustration="secteur/flag.png",
             pub_date=fake.date_time(),
         )
         secteurs.append(secteur)
@@ -46,7 +46,7 @@ def generate_theme(num):
         theme = Theme.objects.create(
             nom=fake.word(),
             description=fake.text(max_nb_chars=2500),
-            illustration="flag.png",
+            illustration="theme/flag.png",
             compteur=random.randint(0, 3000),
             pub_date=fake.date_time(),
             secteur=secteurs[random.randint(0, len(secteurs) - 1)],

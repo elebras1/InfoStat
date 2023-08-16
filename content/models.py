@@ -6,7 +6,9 @@ from datetime import date
 class Secteur(models.Model):
     nom = models.CharField(max_length=80)
     description = models.TextField(max_length=3000)
-    illustration = models.CharField(max_length=120, null=True)
+    illustration = models.ImageField(
+        upload_to="secteur/", blank=True, null=True, default=None
+    )
     pub_date = models.DateField("date de publication", default=date.today)
 
     def __str__(self):
@@ -19,7 +21,9 @@ class Theme(models.Model):
     )
     nom = models.CharField(max_length=80)
     description = models.CharField(max_length=3000)
-    illustration = models.CharField(max_length=120, null=True)
+    illustration = models.ImageField(
+        upload_to="theme/", blank=True, null=True, default=None
+    )
     compteur = models.IntegerField(null=True, default=0)
     pub_date = models.DateField("date de publication", default=date.today)
 

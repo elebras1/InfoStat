@@ -23,4 +23,5 @@ urlpatterns = [
         name="infographie_edit",
     ),
     path("dailydata/", views.daily_data, name="daily_data"),
+    path("secteur/new/", secteur_views.secteur_new, name="secteur_new"),
 ]
