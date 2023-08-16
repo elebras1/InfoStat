@@ -93,3 +93,17 @@ class RegistrationForm(forms.Form):
                 "Le prénom doit contenir au minimum 2 caractères."
             )
         return first_name
+
+    def clean_photo(self):
+        photo = self.cleaned_data.get("photo")
+
+        if photo:
+            valid_extensions = [".png", ".jpeg", ".jpg"]
+            file_extension = photo.name.split(".")[-1].lower()
+
+            if file_extension not in valid_extensions:
+                raise forms.ValidationError(
+                    "Seuls les fichiers PNG et JPEG sont autorisés."
+                )
+
+        return photo
