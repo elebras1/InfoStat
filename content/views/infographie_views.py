@@ -8,7 +8,10 @@ from ..forms.chart_form import (
     PieForm,
     BarNomsForm,
 )
+from ..utils.file_utils import generate_temporary_png_file
 from ..utils.graphique_utils import line, pie, scatter, bar
+from django.http import HttpResponse
+import os
 
 
 def infographie(request, id):
@@ -34,7 +37,11 @@ def infographie(request, id):
     else:
         etat_favori = False
 
-    if request.method == "POST" and user.is_authenticated:
+    if (
+        request.method == "POST"
+        and user.is_authenticated
+        and request.POST.get("favori") == "favori"
+    ):
         if not favori:
             new_favori = Infographie_favori.objects.create(
                 user_id=user.id,
@@ -47,6 +54,24 @@ def infographie(request, id):
                 infographie=infographie,
             ).delete()
             etat_favori = False
+
+    if request.method == "POST" and "download_format" in request.POST:
+        format = request.POST.get("download_format")
+        if format == "pdf":
+            filepath_pdf = generate_temporary_png_file(
+                infographie.graphique, infographie.titre
+            )
+
+            with open(filepath_pdf, "rb") as pdf_file:
+                response = HttpResponse(pdf_file.read(), content_type="application/pdf")
+                response[
+                    "Content-Disposition"
+                ] = f'attachment; filename="{os.path.basename(filepath_pdf)}"'
+
+            print("téléchargé")
+            os.remove(filepath_pdf)
+
+            return response
 
     return render(
         request,
@@ -283,21 +308,6 @@ def infographie_new(request):
             "form_barnoms": form_barnoms,
         },
     )
-
-
-"""def infographie_edit(request, id):
-    infographie = get_object_or_404(Infographie, id=id)
-    user = request.user
-
-    if request.method == "POST":
-        form = InfographieEditForm(request.POST, instance=infographie)
-        if form.is_valid():
-            infographie = form.save(commit=False)
-            infographie.save()
-            return redirect(reverse("infographie", args=[infographie.id]))
-    else:
-        form = InfographieEditForm(instance=infographie)
-    return render(request, "infographie_edit.html", {"form": form})"""
 
 
 def infographie_edit(request, id):

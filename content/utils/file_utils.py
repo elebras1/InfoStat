@@ -2,6 +2,8 @@ import os
 from django.conf import settings
 from django.utils.text import slugify
 from docx import Document
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPDF
 
 
 def generate_temporary_txt_file(title, content):
@@ -39,3 +41,12 @@ def generate_temporary_docx_file(title, content):
     doc.save(filepath)
 
     return filepath
+
+
+def generate_temporary_png_file(filename, titre):
+    filepath = settings.MEDIA_ROOT + filename
+    filepath_pdf = settings.MEDIA_ROOT + "temp/" + slugify(titre) + ".pdf"
+    drawing = svg2rlg(filepath)
+    drawing
+    renderPDF.drawToFile(drawing, filepath_pdf)
+    return filepath_pdf
