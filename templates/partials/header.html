@@ -13,7 +13,7 @@
                         <div class="flex space-x-4">
                             <a href="{% url 'liste_secteur' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Secteurs</a>
                             <a href="#discussion" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Rapports</a>
-                            <a href="#" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Daily Data</a>
+                            <a href="{% url 'daily_data' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Daily Data</a>
                             <a href="{% url 'recherche' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Rechercher</a>
                             {% if user.is_superuser == 1 %}
                                 <a href="{% url 'infographie_new' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Ajouter une infographie</a>

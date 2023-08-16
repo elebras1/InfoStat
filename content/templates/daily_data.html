@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="content flex flex-col items-center">
+    <span class="font-semibold text-blue-600 mt-24">NOUVELLES STATISTIQUES</span>
+    <div class="max-w-5xl mx-auto w-full">
+        <h1 class="mt-3 text-4xl font-light">
+            Statistiques actuelles
+        </h1>
+        <div id="default-carousel" class="relative mt-14 w-full" data-carousel="static">
+            <!-- Carousel wrapper -->
+            <div class="overflow-hidden relative h-96 w-full rounded-md shadow-custom">
+              <!-- Item 1 -->
+                {% for infographie in infographies_last %}
+                    <div class="hidden duration-700 ease-in-out flex rounded text-lg p-3" data-carousel-item>
+                        <div class="w-1/2">
+                            <img src="{{ MEDIA_URL }}{{ infographie.graphique }}">
+                        </div>
+                        <div class="w-1/2">
+                            <div class="">
+                                <span class="text-blue-600">{{infographie.pub_date}}</span>
+                                <span class="mx-1 text-blue-600">|</span>
+                                <span class="text-blue-600">{{infographie.theme.nom}}</span>
+                            </div>
+                            <div class="flex-row mt-2">
+                                <span class="">{{infographie.titre}}</span>
+                                <div class="h-28 overflow-hidden  mt-2">
+                                    <span class="text-gray-600 text-base">{{infographie.description}}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <img class="h-3 mr-1" src="{% static 'arrow.svg' %}">
+                                    <a class="text-blue-600 hover:underline text-base" href="{% url 'infographie' infographie.id %}">lire plus</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Slider indicators -->
+            <div class="flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
+              <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+            </div>
+            <!-- Slider controls -->
+            <button type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
+              <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                <svg class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <span class="hidden">Previous</span>
+              </span>
+            </button>
+            <button type="button" class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
+              <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                <svg class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <span class="hidden">Next</span>
+              </span>
+            </button>
+        </div>
+    </div>
+    <img class="my-24" src="{% static 'line.svg' %}">
+    <div class="flex flex-col items-center">
+        <div class="max-w-6xl w-full">
+            <div class="grid grid-cols-2 gap-3">
+                {% for infographie in infographies%}
+                    <div class="shadow-custom rounded p-3 w-full">
+                        <div class="flex">
+                            <img src={{ MEDIA_URL }}{{ infographie.graphique }} class="h-16">
+                            <div class="flex flex-col ml-3">
+                                <span class="font-medium text-gray-600">{{infographie.theme}}</span>
+                                <a href="{% url 'infographie' infographie.id %}" class="text-gray-600 hover:text-blue-600">{{infographie.titre}}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="max-w-6xl my-14">
+            <div class="grid grid-cols-4 gap-3">
+                {% for article in articles %}
+                    <div class="shadow-custom rounded p-3">
+                        <div class="flex">
+                            <div class="flex flex-col ml-3">
+                                <span class="font-medium text-gray-600">{{article.theme}}</span>
+                                <a href="{% url 'article' article.id %}" class="text-gray-600 hover:text-blue-600">{{article.titre}}</a>
+                                <span class="text-gray-600 mt-3 h-40 overflow-hidden">{{article.description}}</span>
+                                <div class="flex items-center justify-end mt-auto">
+                                    <img src={% static 'arrow.svg' %} class="h-3 mr-1">
+                                    <a href="{% url 'article' article.id %}" class="text-blue-600 mr-2 hover:underline">lire la suite</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "partials/contact_block.html" %}
+
+{% endblock body %}
+

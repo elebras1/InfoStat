@@ -115,3 +115,28 @@ def recherche(request):
             "theme_id": theme_id,
         },
     )
+
+
+def daily_data(request):
+    try:
+        infographies_last = Infographie.objects.all().order_by("-pub_date")[:5]
+    except Infographie.DoesNotExist:
+        raise Http404("Aucun graphique n'a été trouvé.")
+
+    try:
+        infographies = Infographie.objects.all().order_by("-pub_date")[5:13]
+    except Infographie.DoesNotExist:
+        raise Http404("Aucun graphique n'a été trouvé.")
+    try:
+        articles = Article.objects.all().order_by("-pub_date")[:8]
+    except Article.DoesNotExist:
+        raise Http404("Aucun graphique n'a été trouvé.")
+    return render(
+        request,
+        "daily_data.html",
+        {
+            "infographies_last": infographies_last,
+            "infographies": infographies,
+            "articles": articles,
+        },
+    )

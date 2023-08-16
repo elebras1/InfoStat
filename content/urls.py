@@ -22,4 +22,5 @@ urlpatterns = [
         infographie_views.infographie_edit,
         name="infographie_edit",
     ),
+    path("dailydata/", views.daily_data, name="daily_data"),
 ]
