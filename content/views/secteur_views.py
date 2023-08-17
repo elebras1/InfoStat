@@ -18,7 +18,9 @@ def liste_secteur(request):
             Q(nom__icontains=recherche) | Q(themes__nom__icontains=recherche)
         ).distinct()
 
-    return render(request, "liste_secteur.html", {"secteurs": secteurs, "form": form})
+    return render(
+        request, "secteur/liste_secteur.html", {"secteurs": secteurs, "form": form}
+    )
 
 
 def secteur(request, id):
@@ -48,7 +50,7 @@ def secteur(request, id):
 
     return render(
         request,
-        "secteur.html",
+        "secteur/secteur.html",
         {
             "secteur": secteur,
             "infographies_populaires": infographies_populaires,
@@ -70,7 +72,7 @@ def secteur_new(request):
             return redirect(reverse("secteur", args=[secteur.id]))
     else:
         form = SecteurForm()
-    return render(request, "secteur_new.html", {"form": form})
+    return render(request, "secteur/secteur_new.html", {"form": form})
 
 
 def secteur_edit(request, id):
@@ -85,4 +87,4 @@ def secteur_edit(request, id):
             return redirect(reverse("secteur", args=[secteur.id]))
     else:
         form = SecteurForm(instance=secteur)
-    return render(request, "secteur_edit.html", {"form": form})
+    return render(request, "secteur/secteur_edit.html", {"form": form})

@@ -48,13 +48,10 @@ def article(request, id):
             ).delete()
             etat_favori = False
 
-    # Vérifiez si le formulaire de téléchargement a été soumis
     if request.method == "POST" and "download_format" in request.POST:
         format = request.POST.get("download_format")
         if format == "txt":
-            txt_content = (
-                article.description
-            )  # Mettez le contenu approprié de l'article ici
+            txt_content = article.description
             filepath = generate_temporary_txt_file(article.titre, txt_content)
             with open(filepath, "r", encoding="utf-8") as file:
                 response = HttpResponse(file.read(), content_type="text/plain")
@@ -65,9 +62,7 @@ def article(request, id):
             return response
 
         if format == "docx":
-            txt_content = (
-                article.description
-            )  # Mettez le contenu approprié de l'article ici
+            txt_content = article.description
             filepath = generate_temporary_docx_file(article.titre, txt_content)
             with open(filepath, "rb") as file:
                 response = HttpResponse(file.read(), content_type="text/plain")
@@ -79,7 +74,7 @@ def article(request, id):
 
     return render(
         request,
-        "article.html",
+        "article/article.html",
         {
             "article": article,
             "article_selection": article_selection,
@@ -102,7 +97,7 @@ def article_new(request):
     else:
         form = ArticleForm()
 
-    return render(request, "article_new.html", {"form": form})
+    return render(request, "article/article_new.html", {"form": form})
 
 
 def article_edit(request, id):
@@ -118,4 +113,4 @@ def article_edit(request, id):
     else:
         form = ArticleForm(instance=article)
 
-    return render(request, "article_new.html", {"form": form})
+    return render(request, "article/article_new.html", {"form": form})

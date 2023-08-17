@@ -75,7 +75,7 @@ def infographie(request, id):
 
     return render(
         request,
-        "infographie.html",
+        "infographie/infographie.html",
         {
             "infographie": infographie,
             "infographie_selection": infographie_selection,
@@ -297,7 +297,7 @@ def infographie_new(request):
 
     return render(
         request,
-        "infographie_new.html",
+        "infographie/infographie_new.html",
         {
             "form": form_info,
             "graph_html": graph_html,
@@ -525,7 +525,7 @@ def infographie_edit(request, id):
 
     return render(
         request,
-        "infographie_edit.html",
+        "infographie/infographie_edit.html",
         {
             "form": form_info,
             "graph_html": graph_html,

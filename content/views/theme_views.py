@@ -25,7 +25,7 @@ def theme(request, id):
     print("ok")
     return render(
         request,
-        "theme.html",
+        "theme/theme.html",
         {
             "theme": theme,
             "infographies": infographies,
@@ -46,7 +46,7 @@ def theme_new(request):
             return redirect(reverse("theme", args=[theme.id]))
     else:
         form = ThemeForm()
-    return render(request, "theme_new.html", {"form": form})
+    return render(request, "theme/theme_new.html", {"form": form})
 
 
 def theme_edit(request, id):
@@ -61,4 +61,4 @@ def theme_edit(request, id):
             return redirect(reverse("theme", args=[theme.id]))
     else:
         form = ThemeForm(instance=theme)
-    return render(request, "theme_edit.html", {"form": form})
+    return render(request, "theme/theme_edit.html", {"form": form})
