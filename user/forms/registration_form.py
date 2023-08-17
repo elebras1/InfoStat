@@ -94,6 +94,30 @@ class RegistrationForm(forms.Form):
             )
         return first_name
 
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        if len(password) > 20:
+            raise forms.ValidationError(
+                "Le mot de passe ne peut pas dépasser 20 caractères."
+            )
+        elif len(password) < 2:
+            raise forms.ValidationError(
+                "Le mot de passe doit contenir au minimum 8 caractères."
+            )
+        return password
+
+    def clean_password_confirmation(self):
+        password_confirmation = self.cleaned_data.get("password_confirmation")
+        if len(password_confirmation) > 20:
+            raise forms.ValidationError(
+                "Le mot de passe ne peut pas dépasser 20 caractères."
+            )
+        elif len(password_confirmation) < 2:
+            raise forms.ValidationError(
+                "Le mot de passe doit contenir au minimum 8 caractères."
+            )
+        return password_confirmation
+
     def clean_photo(self):
         photo = self.cleaned_data.get("photo")
 

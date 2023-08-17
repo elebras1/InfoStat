@@ -31,3 +31,35 @@ class PasswordForm(forms.Form):
             }
         ),
     )
+
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        if len(password) > 20:
+            raise forms.ValidationError(
+                "Le mot de passe ne peut pas dépasser 20 caractères."
+            )
+        return password
+
+    def clean_new_password(self):
+        new_password = self.cleaned_data.get("new_password")
+        if len(new_password) > 20:
+            raise forms.ValidationError(
+                "Le nouveau mot de passe ne peut pas dépasser 20 caractères."
+            )
+        elif len(new_password) < 8:
+            raise forms.ValidationError(
+                "Le nouveau mot de passe passe doit contenir au minimum 8 caractères."
+            )
+        return new_password
+
+    def clean_new_password_confirmation(self):
+        new_password_confirmation = self.cleaned_data.get("new_password_confirmation")
+        if len(new_password_confirmation) > 20:
+            raise forms.ValidationError(
+                "Le nouveau mot de passe de confirmation ne peut pas dépasser 20 caractères."
+            )
+        elif len(new_password_confirmation) < 8:
+            raise forms.ValidationError(
+                "Le nouveau mot de passe de confirmation doit contenir au minimum 8 caractères."
+            )
+        return new_password_confirmation

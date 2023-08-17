@@ -161,7 +161,12 @@ def password_edit(request):
             password = form.cleaned_data["password"]
             new_password = form.cleaned_data["new_password"]
             new_password_confirmation = form.cleaned_data["new_password_confirmation"]
+            test = form.cleaned_data
+            print(test)
 
+            print("password :" + str(password))
+            print("new password :" + str(new_password))
+            print("request : " + str(request.POST))
             if user.check_password(password):
                 if new_password == new_password_confirmation:
                     user.set_password(new_password)
