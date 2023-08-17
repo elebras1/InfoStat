@@ -12,7 +12,14 @@
             <div class="flex items-start">
                 <div class="mt-6 flex flex-row w-2/3 pr-14">
                     <div class="flex flex-col">
-                        <span class="text-4xl font-light">{{secteur.nom}}</span>
+                        <div class="flex items-center">
+                            <span class="text-4xl font-light">{{secteur.nom}}</span>
+                            {% if user.is_superuser == 1 %}
+                                <a href="{% url 'secteur_edit' secteur.id %}">
+                                    <img src="{% static 'edit_icon.png' %}" class="ml-2 h-6"/>
+                                </a>
+                            {% endif %}
+                        </div>
                         <span class="font-medium text-gray-600 mt-3">Informations et statistiques sur {{secteur.nom}}</span>
                         <div class="mt-3">
                             <img src="{{ MEDIA_URL }}{{ secteur.illustration }}" class="h-12 float-left mr-3">

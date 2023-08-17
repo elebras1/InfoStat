@@ -24,4 +24,7 @@ urlpatterns = [
     ),
     path("dailydata/", views.daily_data, name="daily_data"),
     path("secteur/new/", secteur_views.secteur_new, name="secteur_new"),
+    path("secteur/edit/<int:id>/", secteur_views.secteur_edit, name="secteur_edit"),
+    path("theme/new/", theme_views.theme_new, name="theme_new"),
+    path("theme/edit/<int:id>/", theme_views.theme_edit, name="theme_edit"),
 ]

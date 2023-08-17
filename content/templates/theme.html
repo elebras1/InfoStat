@@ -13,7 +13,14 @@
 
                 <div class="mt-6 flex flex-row justify-between">
                     <div class="flex flex-col w-1/2">
-                        <span class="text-4xl font-light">{{theme.nom}}</span>
+                        <div class="flex">
+                            <span class="text-4xl font-light">{{theme.nom}}</span>
+                                {% if user.is_superuser == 1 %}
+                                    <a href="{% url 'theme_edit' theme.id %}">
+                                        <img src="{% static 'edit_icon.png' %}" class="ml-2 h-6"/>
+                                    </a>
+                                {% endif %}
+                        </div>
                         <span class="font-medium text-gray-600 mt-3">STATISTIQUES RECENTES</span>
                         <div class="mt-6">
                             {% for infographie in infographies %}

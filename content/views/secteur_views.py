@@ -71,3 +71,18 @@ def secteur_new(request):
     else:
         form = SecteurForm()
     return render(request, "secteur_new.html", {"form": form})
+
+
+def secteur_edit(request, id):
+    secteur = get_object_or_404(Secteur, id=id)
+    if request.method == "POST":
+        form = SecteurForm(request.POST, request.FILES, instance=secteur)
+        if form.is_valid():
+            illustration = request.FILES.get("illustration")
+            secteur = form.save(commit=False)
+            secteur.illustration = illustration
+            secteur.save()
+            return redirect(reverse("secteur", args=[secteur.id]))
+    else:
+        form = SecteurForm(instance=secteur)
+    return render(request, "secteur_edit.html", {"form": form})

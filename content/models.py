@@ -20,7 +20,7 @@ class Theme(models.Model):
         Secteur, on_delete=models.CASCADE, related_name="themes"
     )
     nom = models.CharField(max_length=80)
-    description = models.CharField(max_length=3000)
+    description = models.TextField(max_length=3000)
     illustration = models.ImageField(
         upload_to="theme/", blank=True, null=True, default=None
     )

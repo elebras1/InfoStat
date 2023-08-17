@@ -116,9 +116,11 @@
                                     <a href="{% url 'infographie' infographie.id %}">{{infographie.titre}}</a>
                                 </li>
                             {% endfor %}
-                            <li>
-                                <a href="{% url 'article' theme.articles.first.id %}">{{theme.articles.first.titre}}</a>
-                            </li>
+                            {% if theme.articles.first %}
+                                <li>
+                                    <a href="{% url 'article' theme.articles.first.id %}">{{theme.articles.first.titre}}</a>
+                                </li>
+                            {% endif %}
                         </ul>
                         <div class="self-end mt-auto flex items-center">
                             <img class="h-3 mr-1" src="{% static 'arrow.svg' %}">
