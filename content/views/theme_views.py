@@ -4,6 +4,7 @@ from ..models import Theme, Infographie, Article
 from ..forms.rechercheForm import RechercheForm
 from ..forms.theme_form import ThemeForm
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 def theme(request, id):
@@ -35,6 +36,8 @@ def theme(request, id):
     )
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def theme_new(request):
     if request.method == "POST":
         form = ThemeForm(request.POST, request.FILES)
@@ -49,6 +52,8 @@ def theme_new(request):
     return render(request, "theme/theme_new.html", {"form": form})
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def theme_edit(request, id):
     theme = get_object_or_404(Theme, pk=id)
     if request.method == "POST":

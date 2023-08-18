@@ -9,19 +9,46 @@
                     </div>
                 </div>
                 <div class="flex-1 flex items-center justify-center sm:justify-start">
-                    <div class="hidden sm:block sm:ml-6" id="dropdownDefaultButton">
-                        <div class="flex space-x-4">
-                            <a href="{% url 'liste_secteur' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Secteurs</a>
-                            <a href="#discussion" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Rapports</a>
-                            <a href="{% url 'daily_data' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Daily Data</a>
-                            <a href="{% url 'recherche' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Rechercher</a>
+                    <div class="hidden sm:block sm:ml-6">
+                        <div class="flex space-x-4" id="dropdownDefaultButton">
+                            <div class="flex items-center hover:bg-blue-700 rounded px-3 py-2">
+                                <a href="{% url 'liste_secteur' %}" class="text-gray-300 hover:text-white text-sm">Secteurs</a>
+                                <img src="{% static 'triangle.png' %}" class="h-2 ml-2"/>
+                            </div>
+                            <div class="flex items-center hover:bg-blue-700 rounded px-3 py-2">
+                                <a href="{% url 'daily_data' %}" class="text-gray-300 hover:text-white text-sm">Daily Data</a>
+                                <img src="{% static 'triangle.png' %}" class="h-2 ml-2"/>
+                            </div>
+                            <div class="flex items-center hover:bg-blue-700 rounded px-3 py-2">
+                                <a href="{% url 'recherche' %}" class="text-gray-300 hover:text-white text-sm">Rechercher</a>
+                                <img src="{% static 'triangle.png' %}" class="h-2 ml-2"/>
+                            </div>
                             {% if user.is_superuser == 1 %}
-                                <a href="{% url 'infographie_new' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Ajouter une infographie</a>
-                                <a href="{% url 'article_new' %}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded text-sm">Ajouter un article</a>
+                                <div class="flex hover:bg-blue-700 px-3 py-2 rounded items-center">
+                                    <a href="{% url 'infographie_new' %}" class="text-gray-300 hover:text-white text-sm">infographie</a>
+                                    <img src="{% static 'plus.png' %}" class="h-2 ml-2"/>
+                                </div>
+                                <div class="flex hover:bg-blue-700 px-3 py-2 rounded items-center">
+                                    <a href="{% url 'article_new' %}" class="text-gray-300 hover:text-white text-sm">article</a>
+                                    <img src="{% static 'plus.png' %}" class="h-2 ml-2"/>
+                                </div>
+                                <div class="flex hover:bg-blue-700 px-3 py-2 rounded items-center">
+                                    <a href="{% url 'theme_new' %}" class="text-gray-300 hover:text-white text-sm">thème</a>
+                                    <img src="{% static 'plus.png' %}" class="h-2 ml-2"/>
+                                </div>
+                                <div class="flex hover:bg-blue-700 px-3 py-2 rounded items-center">
+                                    <a href="{% url 'secteur_new' %}" class="text-gray-300 hover:text-white text-sm">secteur</a>
+                                    <img src="{% static 'plus.png' %}" class="h-2 ml-2"/>
+                                </div>
                             {% endif %}
                         </div>
                     </div>
                 </div>
+                {% if user.is_staff == True %}
+                    <a href="{% url 'admin:index' %}">
+                        <img src="{% static 'admin.png' %}" class="h-10 mr-2" title="espace administrateur"/>
+                    </a>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <a href="{% url 'profil' %}">
                         <button class="bg-transparent hover:bg-gray-700 text-white font-semibold hover:text-white py-2 px-4 border border-white rounded">

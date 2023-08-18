@@ -3,6 +3,7 @@ from django.urls import reverse
 from ..models import Article, Infographie, Article_favori
 from ..forms.article_form import ArticleForm
 import os
+from django.contrib.auth.decorators import login_required, user_passes_test
 from ..utils.file_utils import generate_temporary_txt_file, generate_temporary_docx_file
 from django.http import HttpResponse
 
@@ -84,6 +85,8 @@ def article(request, id):
     )
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def article_new(request):
     user = request.user
 
@@ -100,6 +103,8 @@ def article_new(request):
     return render(request, "article/article_new.html", {"form": form})
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def article_edit(request, id):
     article = get_object_or_404(Article, pk=id)
     user = request.user

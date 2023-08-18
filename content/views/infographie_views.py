@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.contrib.auth.decorators import login_required, user_passes_test
 from ..models import Infographie, Article, Infographie_favori
 from ..forms.infographie_form import InfographieForm, InfographieEditForm
 from ..forms.chart_form import (
@@ -85,6 +86,8 @@ def infographie(request, id):
     )
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def infographie_new(request):
     user = request.user
     graph_html = None
@@ -310,6 +313,8 @@ def infographie_new(request):
     )
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def infographie_edit(request, id):
     infographie = get_object_or_404(Infographie, id=id)
     user = request.user

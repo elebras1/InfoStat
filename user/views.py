@@ -11,6 +11,7 @@ from content.models import Infographie, Article
 from content.forms.rechercheForm import RechercheForm
 from django.db.models import Q
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
 
 
 class CustomLoginView(LoginView):
@@ -78,6 +79,7 @@ def registration(request):
     return render(request, "registration.html", {"form": form})
 
 
+@login_required
 def profil(request):
     user = request.user
 
@@ -133,6 +135,7 @@ def profil(request):
     )
 
 
+@login_required
 def profil_edit(request):
     user = request.user
     user_profile = get_object_or_404(UserProfile, user=user)
@@ -152,6 +155,7 @@ def profil_edit(request):
     return render(request, "profil_edit.html", {"form": form})
 
 
+@login_required
 def password_edit(request):
     user = request.user
 

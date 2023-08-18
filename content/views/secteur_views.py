@@ -6,6 +6,7 @@ from ..forms.rechercheForm import RechercheForm
 from ..forms.secteur_form import SecteurForm
 from django.db.models import Q
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 def liste_secteur(request):
@@ -61,6 +62,8 @@ def secteur(request, id):
     )
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def secteur_new(request):
     if request.method == "POST":
         form = SecteurForm(request.POST, request.FILES)
@@ -75,6 +78,8 @@ def secteur_new(request):
     return render(request, "secteur/secteur_new.html", {"form": form})
 
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
 def secteur_edit(request, id):
     secteur = get_object_or_404(Secteur, id=id)
     if request.method == "POST":

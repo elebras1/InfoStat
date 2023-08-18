@@ -75,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "InfoStat.wsgi.application"
 
+LOGIN_URL = "/user/login/"
 
 # Base url to serve media files
 MEDIA_URL = "/media/"
