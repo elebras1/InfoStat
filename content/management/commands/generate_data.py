@@ -16,7 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         generate_secteurs(20)
         generate_theme(200)
-        generate_region(197)
+        generate_region()
         generate_user(20)
         generate_infographie(2000)
         generate_article(2000)

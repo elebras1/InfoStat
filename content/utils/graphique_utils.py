@@ -82,8 +82,11 @@ def scatter(x_values_list, y_values_list, titre, x_titre, y_titre, nom_points, a
 
 
 def bar(valeurs, titres, noms, titre, x_titre, y_titre, action):
+    print("valeurs :" + str(valeurs))
+    print("titres :" + str(titres))
+    print("noms :" + str(noms))
     df = pd.DataFrame(valeurs, columns=noms, index=titres)
-    print(y_titre)
+    print("datatframe : " + str(df))
 
     fig = px.bar(
         df, x=titres, y=noms, title=titre, labels={"x": x_titre, "value": y_titre}

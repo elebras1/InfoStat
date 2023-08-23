@@ -7,18 +7,16 @@ from ..models import (
     Infographie_favori,
     Article_favori,
 )
-
+import pycountry
 from user.models import UserProfile
 from django.contrib.auth.models import User
-
 from django.db import IntegrityError
-
-
 from faker import Faker
+from ..utils.graphique_utils import line, bar, pie, scatter
 import random
 
 
-random.seed(10)
+# random.seed(10)
 fake = Faker()
 secteurs = []
 themes = []
@@ -55,9 +53,11 @@ def generate_theme(num):
         theme.save()
 
 
-def generate_region(num):
-    for _ in range(num):
-        region = Region.objects.create(nom=fake.word())
+def generate_region():
+    countries = pycountry.countries
+
+    for country in countries:
+        region = Region.objects.create(nom=country.name)
         regions.append(region)
         region.save()
 
@@ -119,12 +119,24 @@ def generate_user(num):
 
 
 def generate_infographie(num):
+    noms_courbes = []
+
     for _ in range(num):
+        graph_random = random.randint(0, 3)
+        if graph_random == 0:
+            graph = generate_line()
+        elif graph_random == 1:
+            graph = generate_pie()
+        elif graph_random == 2:
+            graph = generate_scatter()
+        elif graph_random == 3:
+            graph = generate_bar()
+
         infographie = Infographie.objects.create(
-            titre=fake.sentence(),
+            titre=graph["titre"],
             description=fake.text(max_nb_chars=2500),
-            graphique="graphique/default_graphique.svg",
-            source="https://www.cairn.fr",
+            graphique=graph["filename"],
+            source="https://www.worldata.fr",
             periode_enquete="2018 - 2022",
             compteur=random.randint(0, 3000),
             pub_date=fake.date(),
@@ -134,6 +146,110 @@ def generate_infographie(num):
         )
         infographies.append(infographie)
         infographie.save()
+
+
+def generate_line():
+    x_values_list = []
+    y_values_list = []
+    noms_courbes = []
+    titre = fake.sentence()
+
+    rand_val = random.randint(1, 30)
+    for nb_courbe in range(random.randint(1, 10)):
+        x_values = []
+        y_values = []
+        noms_courbes.append(fake.word())
+
+        for nb_valeur in range(rand_val):
+            if nb_valeur == 0 and nb_courbe == 0:
+                x_values.append(random.randint(1, 2000))
+            elif nb_courbe == 0 and nb_valeur > 0:
+                x_values.append(x_values[nb_valeur - 1] + 1)
+
+            y_values.append(random.randint(1, 300))
+
+        if nb_courbe > 0:
+            x_values = x_values_list[0]
+
+        x_values_list.append(x_values)
+        y_values_list.append(y_values)
+
+    filename = line(x_values_list, y_values_list, titre, "x", "y", noms_courbes, "save")
+
+    return {"titre": titre, "filename": filename}
+
+
+def generate_pie():
+    values = []
+    names = []
+
+    nb_valeur = random.randint(1, 10)
+    titre = fake.sentence()
+
+    for i in range(nb_valeur):
+        names.append(fake.word())
+        values.append(random.randint(1, 200))
+
+    filename = pie(values, names, titre, "save")
+
+    return {"titre": titre, "filename": filename}
+
+
+def generate_scatter():
+    x_values_list = []
+    y_values_list = []
+    noms_points = []
+    titre = fake.sentence()
+
+    rand_val = random.randint(1, 30)
+    for nb_point in range(random.randint(1, 10)):
+        x_values = []
+        y_values = []
+        noms_points.append(fake.word())
+
+        for nb_valeur in range(rand_val):
+            if nb_valeur == 0 and nb_point == 0:
+                x_values.append(random.randint(1, 2000))
+            elif nb_point == 0 and nb_valeur > 0:
+                x_values.append(x_values[nb_valeur - 1] + 1)
+
+            y_values.append(random.randint(1, 300))
+
+        if nb_point > 0:
+            x_values = x_values_list[0]
+
+        x_values_list.append(x_values)
+        y_values_list.append(y_values)
+
+    filename = scatter(
+        x_values_list, y_values_list, titre, "x", "y", noms_points, "save"
+    )
+
+    return {"titre": titre, "filename": filename}
+
+
+def generate_bar():
+    titre = fake.word()
+    valeurs_list = []
+    titres = []
+
+    rand_val = random.randint(1, 10)
+    noms = []
+    while len(noms) < rand_val:
+        nom = fake.unique.word()
+        noms.append(nom)
+    for nb_bar in range(random.randint(1, 10)):
+        valeurs = []
+        titres.append(fake.word())
+
+        for nb_valeur in range(rand_val):
+            valeurs.append(random.randint(0, 50))
+
+        valeurs_list.append(valeurs)
+
+    filename = bar(valeurs_list, titres, noms, titre, "x", "y", "save")
+
+    return {"titre": titre, "filename": filename}
 
 
 def generate_article(num):
