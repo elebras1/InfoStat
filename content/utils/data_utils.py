@@ -29,10 +29,20 @@ superusers = []
 
 def generate_secteurs(num):
     for _ in range(num):
+        nb_rand = random.randint(1, 4)
+        if nb_rand == 1:
+            illustration = "secteur/random1.jpeg"
+        elif nb_rand == 2:
+            illustration = "secteur/random2.jpeg"
+        elif nb_rand == 3:
+            illustration = "secteur/random3.jpeg"
+        elif nb_rand == 4:
+            illustration = "secteur/random4.jpeg"
+
         secteur = Secteur.objects.create(
             nom=fake.word(),
             description=fake.text(max_nb_chars=2500),
-            illustration="secteur/flag.png",
+            illustration=illustration,
             pub_date=fake.date_time(),
         )
         secteurs.append(secteur)
@@ -41,10 +51,20 @@ def generate_secteurs(num):
 
 def generate_theme(num):
     for _ in range(num):
+        nb_rand = random.randint(1, 4)
+        if nb_rand == 1:
+            illustration = "theme/random1.jpg"
+        elif nb_rand == 2:
+            illustration = "theme/random2.jpg"
+        elif nb_rand == 3:
+            illustration = "theme/random3.jpg"
+        elif nb_rand == 4:
+            illustration = "theme/random4.jpg"
+
         theme = Theme.objects.create(
             nom=fake.word(),
             description=fake.text(max_nb_chars=2500),
-            illustration="theme/flag.png",
+            illustration=illustration,
             compteur=random.randint(0, 3000),
             pub_date=fake.date_time(),
             secteur=secteurs[random.randint(0, len(secteurs) - 1)],
@@ -119,9 +139,7 @@ def generate_user(num):
 
 
 def generate_infographie(num):
-    noms_courbes = []
-
-    for _ in range(num):
+    for i in range(num):
         graph_random = random.randint(0, 3)
         if graph_random == 0:
             graph = generate_line()
@@ -132,12 +150,16 @@ def generate_infographie(num):
         elif graph_random == 3:
             graph = generate_bar()
 
+        enquete_year = random.randint(1950, 2023)
+        enquete_nb_years = random.randint(0, 8)
+        periode_enquete = str(enquete_year) + "-" + str(enquete_year + enquete_nb_years)
+
         infographie = Infographie.objects.create(
             titre=graph["titre"],
             description=fake.text(max_nb_chars=2500),
             graphique=graph["filename"],
             source="https://www.worldata.fr",
-            periode_enquete="2018 - 2022",
+            periode_enquete=periode_enquete,
             compteur=random.randint(0, 3000),
             pub_date=fake.date(),
             theme=themes[random.randint(0, len(themes) - 1)],
@@ -146,6 +168,7 @@ def generate_infographie(num):
         )
         infographies.append(infographie)
         infographie.save()
+        print(str(i) + " / " + str(num))
 
 
 def generate_line():
@@ -236,8 +259,10 @@ def generate_bar():
     rand_val = random.randint(1, 10)
     noms = []
     while len(noms) < rand_val:
-        nom = fake.unique.word()
-        noms.append(nom)
+        nom = fake.word()
+        if nom not in noms:
+            noms.append(nom)
+
     for nb_bar in range(random.randint(1, 10)):
         valeurs = []
         titres.append(fake.word())
