@@ -1,11 +1,12 @@
 [![Langage](https://img.shields.io/badge/Langage-Python-blue.svg)](https://www.python.org/)
 [![Framework](https://img.shields.io/badge/Framework-Django-green.svg)](https://www.djangoproject.com/)
 [![Langage](https://img.shields.io/badge/Langage-HTML-orange.svg)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![Langage](https://img.shields.io/badge/Langage-JavaScript-yellow.svg)](https://developer.mozilla.org/fr/docs/Web/JavaScript)
 [![Libraries](https://img.shields.io/badge/Library-Tailwind_CSS-blueviolet.svg)](https://tailwindcss.com/)
 [![Libraries](https://img.shields.io/badge/Library-Plotly-0066CC.svg)](https://plotly.com/python/)
 
 # InfoStat
-A website about statistics and report like Statista
+A Django-based Python project that functions as a comprehensive platform for cataloging and generating various types of graphics like Statista.
 
 # Summary
 
