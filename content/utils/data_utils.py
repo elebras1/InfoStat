@@ -31,13 +31,13 @@ def generate_secteurs(num):
     for _ in range(num):
         nb_rand = random.randint(1, 4)
         if nb_rand == 1:
-            illustration = "secteur/random1.jpeg"
+            illustration = "secteur/random1.jpg"
         elif nb_rand == 2:
-            illustration = "secteur/random2.jpeg"
+            illustration = "secteur/random2.jpg"
         elif nb_rand == 3:
-            illustration = "secteur/random3.jpeg"
+            illustration = "secteur/random3.jpg"
         elif nb_rand == 4:
-            illustration = "secteur/random4.jpeg"
+            illustration = "secteur/random4.jpg"
 
         secteur = Secteur.objects.create(
             nom=fake.word(),
