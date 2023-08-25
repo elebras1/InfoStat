@@ -27,7 +27,7 @@ A Django-based Python project that functions as a comprehensive platform for cat
 <a id="use" class="anchor"></a>
 1. Start your sql server and web server django, py manage.py runserver
 2. Generate the realitic data with this command, py manage.py generate_data
-3. Open your browser and and if it's local, use http://127.0.0.1:8000.
+3. Open your browser and and if it's local, use 127.0.0.1:8000.
 
 
 ## Core Features
