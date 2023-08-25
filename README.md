@@ -14,8 +14,8 @@ A Django-based Python project that functions as a comprehensive platform for cat
 - [Use](#use)
 - [Core Features](#core_features)
 - [Management rules](#management_rules)
-- [Licence](#licence)
 - [Database](#database)
+- [Licence](#licence)
 ## Install
 <a id="install" class="anchor"></a>
 1. Clone the repository to your local machine.
@@ -61,15 +61,15 @@ A Django-based Python project that functions as a comprehensive platform for cat
 
 ## Database
 <a id="database" class="anchor"></a>
-Secteur(PK:id_secteur, nom, description, illustration, pub_date)
-Theme(PK:id_theme, nom, description, illustration, compteur, pub_date, FK:id_secteur)
-Region(PK:id_region, nom)
-Infographie(id_infographie, titre, description, graphique, source, periode_enquete, compteur, pub_date, FK:id_theme, FK:id_region, FK:id_user)
-Article(id_article, titre, description, source, compteur, pub_date, FK:id_theme, FK:id_region, FK:id_user)
-Infographie_favori(PK:id_info_fav, FK:id_infographie, FK:id_user)
-Article_favori(PK:id_art_fav, FK:id_article, FK:id_user)
-User(PK:id_user, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined)
-User_profile(PK:id_user_profile, photo, FK:id_user)
+- Secteur(PK:id_secteur, nom, description, illustration, pub_date)
+- Theme(PK:id_theme, nom, description, illustration, compteur, pub_date, FK:id_secteur)
+ -Region(PK:id_region, nom)
+- Infographie(id_infographie, titre, description, graphique, source, periode_enquete, compteur, pub_date, FK:id_theme, FK:id_region, FK:id_user)
+- Article(id_article, titre, description, source, compteur, pub_date, FK:id_theme, FK:id_region, FK:id_user)
+- Infographie_favori(PK:id_info_fav, FK:id_infographie, FK:id_user)
+- Article_favori(PK:id_art_fav, FK:id_article, FK:id_user)
+- User(PK:id_user, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined)
+- User_profile(PK:id_user_profile, photo, FK:id_user)
 
 ## Licence
 
