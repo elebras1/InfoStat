@@ -36,16 +36,26 @@ A Django-based Python project that functions as a comprehensive platform for cat
 - Daily data offers the latest infographics and article added
 - The infographic page allows you to view the chart with various associated information: author, theme and associated sector, title, region, publication date, source, survey period and description.
   The infographic can be downloaded in svg or pdf format and can be added to favorites.
-- The article pag allows you to view a article with various associated information: author, source, title, publication date and associated region.
+- The article page allows you to view a article with various associated information: author, source, title, publication date and associated region.
   The article can be downloaded in txt or docx format and can be added to favorites
 - An infographic can be created and edited, all information must be filled in and it is possible to choose between 5 graphic curves, sectors, scatter plots, bars.
 - An article can be add abd edit.
-  
-
-
+- the sector listing page lists all sectors with their associated themes.
+  the sector page display many information : title, description, picture, theme associated, 10 popular/latest infographic and article.
+  A sector can be add and edit.
+- the theme page display the 6 latest infographic and article, and display theme who shared the same sector.
+  A sector can be add and edit.
+- the search page allows you to search for an infographic or the title of an article and display it in order of addition or popularity.
+  if the user accesses this page using the sector or theme search space, the search will be filtered by sector or theme.
+- the profil page display the information of user : pseudo, name, lastname, picture, email, creation date and display all of favorites infographic and article, if the superuser sees all their infographics and      articles added, the user can search by title of all favorites and added infographic and article.
+  A user can be add and edit the informations and password.
+- the contact page sends the input information to all super users.
+- The administrator area allows you to administer the site
 
 ## Management rules
 <a id="management_rules" class="anchor"></a>
+
+## Database
 
 
 ## Licence
