@@ -54,6 +54,10 @@ A Django-based Python project that functions as a comprehensive platform for cat
 
 ## Management rules
 <a id="management_rules" class="anchor"></a>
+- There are three types of users with an account: the basic user, the superuser, and administrator
+- A basic user can consult his profile modify the information and the password, he can add infographic and article as favorite
+- A superuser can add sector, theme, infographic, article and can edit them.
+- A administrator access administrator area
 
 ## Database
 
