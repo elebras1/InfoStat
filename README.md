@@ -32,6 +32,16 @@ A Django-based Python project that functions as a comprehensive platform for cat
 
 ## Core Features
 <a id="core_features" class="anchor"></a>
+- The home page offers different features such as the display of the 5 most popular infographics over 1 year, the 25 most popular themes...
+- Daily data offers the latest infographics and article added
+- The infographic page allows you to view the chart with various associated information: author, theme and associated sector, title, region, publication date, source, survey period and description.
+  The infographic can be downloaded in svg or pdf format and can be added to favorites.
+- The article pag allows you to view a article with various associated information: author, source, title, publication date and associated region.
+  The article can be downloaded in txt or docx format and can be added to favorites
+- An infographic can be created and edited, all information must be filled in and it is possible to choose between 5 graphic curves, sectors, scatter plots, bars.
+- An article can be add abd edit.
+  
+
 
 
 ## Management rules
