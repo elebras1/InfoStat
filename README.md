@@ -5,6 +5,8 @@
 [![Libraries](https://img.shields.io/badge/Library-Tailwind_CSS-blueviolet.svg)](https://tailwindcss.com/)
 [![Libraries](https://img.shields.io/badge/Library-Plotly-0066CC.svg)](https://plotly.com/python/)
 
+![ebookverse_demo](media/infostat_short_480_video.gif)
+
 # InfoStat
 A Django-based Python project that functions as a comprehensive platform for cataloging and generating various types of graphics like Statista.
 
