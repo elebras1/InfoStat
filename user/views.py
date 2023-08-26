@@ -113,12 +113,13 @@ def profil(request):
             Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
         )
 
-        infographies_ajoute = infographies_ajoute.filter(
-            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
-        )
-        articles_ajoute = articles_ajoute.filter(
-            Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
-        )
+        if infographies_ajoute:
+            infographies_ajoute = infographies_ajoute.filter(
+                Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+            )
+            articles_ajoute = articles_ajoute.filter(
+                Q(titre__istartswith=recherche) | Q(titre__icontains=" " + recherche)
+            )
 
     return render(
         request,
